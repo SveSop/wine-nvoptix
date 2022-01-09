@@ -1,12 +1,12 @@
 #!/bin/bash
 
-nvapi_dir="$(dirname "$(readlink -fm "$0")")"
+nvoptix_dir="$(dirname "$(readlink -fm "$0")")"
 dll_ext='dll.so'
-wine="wine"
-lib='lib32'
+wine="wine64"
+lib='lib64'
 
-if [ ! -f "$nvapi_dir/$lib/nvcuda.$dll_ext" ]; then
-    echo "nvcuda.$dll_ext not found in $nvapi_dir/$lib" >&2
+if [ ! -f "$nvoptix_dir/$lib/nvoptix.$dll_ext" ]; then
+    echo "nvoptix.$dll_ext not found in $nvoptix_dir/$lib" >&2
     exit 1
 fi
 
@@ -110,7 +110,7 @@ function createOverride {
         exit 1
     fi
     echo "    [2/2] Creating link to $1.$dll_ext... "
-    ln -sf "$nvapi_dir/$lib/$1.$dll_ext" "$unix_sys_path/$1.dll"
+    ln -sf "$nvoptix_dir/$lib/$1.$dll_ext" "$unix_sys_path/$1.dll"
     if [ $? -ne 0 ]; then
         echo -e "Failed"
         exit 1
@@ -131,25 +131,9 @@ install)
     ;;
 esac
 
-echo '[1/4] nvcuda :'
-$fun nvcuda
-echo '[2/4] nvcuvid :'
-$fun nvcuvid
-echo '[3/4] nvapi :'
-$fun nvapi
-echo '[4/4] nvencodeapi :'
-$fun nvencodeapi
-wine="wine64"
-lib='lib64'
 unix_sys_path=$($wine winepath -u 'C:\windows\system32' 2> /dev/null)
-echo '[1/4] 64 bit nvcuda :'
-$fun nvcuda
-echo '[2/4] 64 bit nvcuvid :'
-$fun nvcuvid
-echo '[3/4] 64 bit nvapi64 :'
-$fun nvapi64
-echo '[4/4] 64 bit nvencodeapi64 :'
-$fun nvencodeapi64
+echo '[1/1] 64 bit nvoptix :'
+$fun nvoptix
 if [ "$fun" = removeOverride ]; then
    echo "Rebooting prefix!"
    wineboot -u
