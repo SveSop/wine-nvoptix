@@ -40,19 +40,19 @@ WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 
 static void *libnvoptix_handle = NULL;
 
-typedef OptixResult (optixQueryFunctionTable_t)(int abiId, unsigned int numOptions, OptixQueryFunctionTableOptions *, const void **, void *function_code, size_t sizeOfTable);
-typedef OptixResult (rtGetSymbolTable_t)(void);
+static OptixResult (*poptixQueryFunctionTable)(int abiId, unsigned int numOptions, OptixQueryFunctionTableOptions *FuncOpt, const void **Info, void *functionTable, size_t sizeOfTable);
+static OptixResult (*prtGetSymbolTable)(void);
 
-OptixResult __cdecl optixQueryFunctionTable(int abiId, unsigned int numOptions, OptixQueryFunctionTableOptions *, const void **, void *function_code, size_t sizeOfTable)
+OptixResult __cdecl optixQueryFunctionTable(int abiId, unsigned int numOptions, OptixQueryFunctionTableOptions *FuncOpt, const void **Info, void *functionTable, size_t sizeOfTable)
 {
-    TRACE("(%d, %p)\n", abiId, function_code);
-    return optixQueryFunctionTable_t(abiId, numOptions, *, **, *function_code, sizeOfTable);
+    TRACE("(AbiID: %d, numOptions: %u, FunctionTablePtr: %p, InfoPtr: %p, Size: %ld)\n", abiId, numOptions, functionTable, Info, sizeOfTable);
+    return poptixQueryFunctionTable(abiId, numOptions, FuncOpt, Info, functionTable, sizeOfTable);
 }
 
 OptixResult __cdecl rtGetSymbolTable(void)
 {
     TRACE("()\n");
-    return rtGetSymbolTable_t();
+    return prtGetSymbolTable();
 }
 
 static BOOL load_nvoptix(void)

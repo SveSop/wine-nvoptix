@@ -20,4 +20,4 @@ idl_generator = generator(widl,
   output    : [ '@BASENAME@.h' ],
   arguments : [ target_arch, '-o', '@OUTPUT@', '-D__WINESRC__', '@EXTRA_ARGS@', '@INPUT@' ])
 
-subdir('dlls')
+subdir('src')
