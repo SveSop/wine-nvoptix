@@ -1,3 +1,2 @@
-@ cdecl optixQueryFunctionTable(long)
-@ cdecl rtGetSymbolTable(ptr)
-@ stub NvOptimusEnablementCuda
+@ cdecl optixQueryFunctionTable(long long ptr ptr ptr long)
+@ cdecl rtGetSymbolTable()
