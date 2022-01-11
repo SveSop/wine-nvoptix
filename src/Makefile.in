@@ -1,0 +1,7 @@
+MODULE    = nvoptix.dll
+EXTRALIBS = $(PTHREAD_LIBS)
+
+C_SRCS = \
+	nvoptix.c
+
+RC_SRCS = nvoptix.rc
