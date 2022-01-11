@@ -2,6 +2,7 @@
  * MIT License
  * Copyright (C) 2022 Sveinar Søpler
  * Copyright (C) 2022 Krzysztof Bogacki
+ * Copyright (C) 2022 Timothée Barral
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
