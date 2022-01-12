@@ -1,0 +1,28 @@
+name: Build
+
+on: push
+
+jobs:
+  ci:
+    name: Build
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - name: Prepare
+        run: |
+          echo -e '\n\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n\n' >> /etc/pacman.conf
+          pacman -Syu --noconfirm --needed git meson ninja wine
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup
+        run: meson setup ./build64 --cross-file ./build-wine64.txt --libdir lib64 --prefix /usr --buildtype release --strip
+      - name: Build
+        run: ninja -C ./build64
+      - name: Install
+        run: env DESTDIR="${PWD}" ninja -C ./build64 install
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: wine-nvoptix
+          # TODO: fix defs and fakedlls being installed to weird locations
+          path: usr/lib*/**
