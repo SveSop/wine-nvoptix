@@ -1,7 +1,12 @@
-# wine-nvoptix a OptiX relay library for wine  
+# wine-nvoptix a OptiX relay library for wine 
 
-This project intend to relay functions from nvoptix.dll <-> libnvoptix  
-This will only work with nVidia (tm) GPU with appropriate proprietary drivers  
+[Wine](https://www.winehq.org/) is a compability software allowing Linux and Mac OS users to run Windows software as native applications. Wine works by translating calls to windows libraries to native Linux / Mac OS libraries.
+
+wine-nvoptix is a library to be used with wine. It aims at allowing Linux / Mac OS users to launch Windows software using the OptiX API. This API, developed by nVidia, is used to do Ray Tracing calculations using nVidia GPU, mostly in 3D environments. This library, wine-optix, works by creating a fake windows Dll which will translate calls to the Windows nVidia Optix API to the Linux / Mac OS native API.
+
+This project is heavily based on the public documentation and source files from nVidia: https://raytracing-docs.nvidia.com/
+
+This work is done freely to help the users community to run their Windows programs on Linux / Mac OS.
 
 ## Building:  
 Compile requirements: Meson + Ninja + other usual suspects like GCC and Wine  
