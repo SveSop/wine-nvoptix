@@ -24,9 +24,7 @@
  *
  */
 
-#include "config.h"
-#include "wine/port.h"
-
+#include <dlfcn.h>
 #include <stdarg.h>
 
 #include "windef.h"
