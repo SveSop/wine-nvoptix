@@ -19,15 +19,38 @@ Install the nvoptix.dll relay to your wineprefix by running the script:
 cd /home/user/nvoptix  
 WINEPREFIX=/your/wine/prefix ./setup_nvoptix.sh install  
 
-You need a working Wine version with wineprefix set up.  
+You need a working Wine version with wineprefix set up, and a correctly configured nVidia Graphics adapter using proprietary nVidia drivers 470 or later  
 
 ## Requirements:  
-DXVK-NVAPI - [https://github.com/jp7677/dxvk-nvapi](https://github.com/jp7677/dxvk-nvapi)  
+[DXVK-NVAPI](https://github.com/jp7677/dxvk-nvapi)  
 
-Recommended: WINE-NVML - [https://github.com/Saancreed/wine-nvml](https://github.com/Saancreed/wine-nvml)  
+Recommended: [WINE-NVML](https://github.com/Saancreed/wine-nvml) for hardware function detection from nVidia GPU  
 
 ## License:  
-Parts of this project is released on the terms of MIT license, however various headers and sourcecode is released under NVIDIA Licese.  
+Parts of this project is released on the terms of MIT license, however various headers and sourcecode is released under under different license.  
+Files and headers in the `include` folder is released under GNU Lesser General Public License - Wine  
+Header files in the `src` folder is released under NVIDIA License.  
+
+## Wine License:  
+```
+Copyright (c) 1993-2022 the Wine project authors (see the file AUTHORS
+for a complete list)
+
+Wine is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the
+Free Software Foundation; either version 2.1 of the License, or (at
+your option) any later version. 
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+A copy of the GNU Lesser General Public License is included in the
+Wine distribution in the file COPYING.LIB. If you did not receive this
+copy, write to the Free Software Foundation, Inc., 51 Franklin St,
+Fifth Floor, Boston, MA 02110-1301, USA.
+```
 
 ## NVIDIA License:  
 ```
