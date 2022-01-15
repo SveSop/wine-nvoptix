@@ -51,7 +51,7 @@ static OptixFunctionTable_36 optixFunctionTable_36;
 
 // TODO: duplicate functions below for each ABI version, calling into optixFunctionTable_X instead
 
-/* OptiX ABI = 55 / SDK 7.3.0 */
+/* OptiX ABI = 55 / SDK 7.4.0 */
 
 static const char *__cdecl optixGetErrorName_55(OptixResult result)
 {
@@ -345,7 +345,7 @@ static OptixResult __cdecl optixDenoiserCreateWithUserModel_55(OptixDeviceContex
     return optixFunctionTable_55.optixDenoiserCreateWithUserModel(context, data, dataSizeInBytes, returnHandle);
 }
 
-/* OptiX ABI = 36 / SDK 7.3.0 */
+/* OptiX ABI = 36 / SDK 7.1.0 */
 
 static const char *__cdecl optixGetErrorName_36(OptixResult result)
 {
@@ -561,10 +561,10 @@ static OptixResult __cdecl optixLaunch_36(OptixPipeline pipeline, CUstream strea
     return optixFunctionTable_36.optixLaunch(pipeline, stream, pipelineParams, pipelineParamsSize, sbt, width, height, depth);
 }
 
-static OptixResult __cdecl optixDenoiserCreate_36(OptixDeviceContext context, int modelKind, const void *options, OptixDenoiser *returnHandle)
+static OptixResult __cdecl optixDenoiserCreate_36(OptixDeviceContext context, const void *options, OptixDenoiser *returnHandle)
 {
-    TRACE("(%p, %d, %p, %p)\n", context, modelKind, options, returnHandle);
-    return optixFunctionTable_36.optixDenoiserCreate(context, modelKind, options, returnHandle);
+    TRACE("(%p, %p, %p)\n", context, options, returnHandle);
+    return optixFunctionTable_36.optixDenoiserCreate(context, options, returnHandle);
 }
 
 static OptixResult __cdecl optixDenoiserDestroy_36(OptixDenoiser handle)
@@ -585,10 +585,10 @@ static OptixResult __cdecl optixDenoiserSetup_36(OptixDenoiser denoiser, CUstrea
     return optixFunctionTable_36.optixDenoiserSetup(denoiser, stream, inputWidth, inputHeight, state, stateSizeInBytes, scratch, scratchSizeInBytes);
 }
 
-static OptixResult __cdecl optixDenoiserInvoke_36(OptixDenoiser denoiser, CUstream stream, const void *params, CUdeviceptr denoiserState, size_t denoiserStateSizeInBytes, const void *guideLayer, const void *layers, unsigned int numLayers, unsigned int inputOffsetX, unsigned int inputOffsetY, CUdeviceptr scratch, size_t scratchSizeInBytes)
+static OptixResult __cdecl optixDenoiserInvoke_36(OptixDenoiser denoiser, CUstream stream, const void *params, CUdeviceptr denoiserState, size_t denoiserStateSizeInBytes, const void *layers, unsigned int numLayers, unsigned int inputOffsetX, unsigned int inputOffsetY, const void *outputLayer, CUdeviceptr scratch, size_t scratchSizeInBytes)
 {
-    TRACE("(%p, %p, %p, %p, %zu, %p, %p, %u, %u, %u, %p, %zu)\n", denoiser, stream, params, denoiserState, denoiserStateSizeInBytes, guideLayer, layers, numLayers, inputOffsetX, inputOffsetY, scratch, scratchSizeInBytes);
-    return optixFunctionTable_36.optixDenoiserInvoke(denoiser, stream, params, denoiserState, denoiserStateSizeInBytes, guideLayer, layers, numLayers, inputOffsetX, inputOffsetY, scratch, scratchSizeInBytes);
+    TRACE("(%p, %p, %p, %p, %zu, %p, %u, %u, %u, %p, %p, %zu)\n", denoiser, stream, params, denoiserState, denoiserStateSizeInBytes, layers, numLayers, inputOffsetX, inputOffsetY, outputLayer, scratch, scratchSizeInBytes);
+    return optixFunctionTable_36.optixDenoiserInvoke(denoiser, stream, params, denoiserState, denoiserStateSizeInBytes, layers, numLayers, inputOffsetX, inputOffsetY, outputLayer, scratch, scratchSizeInBytes);
 }
 
 static OptixResult __cdecl optixDenoiserSetModel_36(OptixDenoiser handle, int kind, void* data, size_t sizeInBytes)
@@ -606,7 +606,7 @@ static OptixResult __cdecl optixDenoiserComputeIntensity_36(OptixDenoiser handle
 
 // TODO: duplicate for each ABI version
 
-/* OptiX ABI = 55 / SDK 7.3.0 */
+/* OptiX ABI = 55 / SDK 7.4.0 */
 
 static OptixResult __cdecl optixQueryFunctionTable_55(
     unsigned int numOptions,
@@ -674,7 +674,7 @@ static OptixResult __cdecl optixQueryFunctionTable_55(
     return OPTIX_SUCCESS;
 }
 
-/* OptiX ABI = 36 / SDK 7.3.0 */
+/* OptiX ABI = 36 / SDK 7.1.0 */
 
 static OptixResult __cdecl optixQueryFunctionTable_36(
         unsigned int numOptions,
