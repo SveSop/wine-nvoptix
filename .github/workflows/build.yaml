@@ -14,12 +14,19 @@ jobs:
           pacman -Syu --noconfirm --needed git meson ninja wine
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup
+      - name: Setup x86_64
         run: meson setup ./build64 --cross-file ./build-wine64.txt --libdir lib64 --prefix /usr --buildtype release --strip
-      - name: Build
+      - name: Build x86_64
         run: ninja -C ./build64
+      - name: Setup x86
+        run: meson setup ./build32 --cross-file ./build-wine32.txt --libdir lib32 --prefix /usr --buildtype release --strip
+      - name: Build x86
+        run: ninja -C ./build32
       - name: Install
-        run: env DESTDIR="${PWD}" ninja -C ./build64 install
+        run: |
+          export DESTDIR="${PWD}"
+          ninja -C ./build64 install
+          ninja -C ./build32 install
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
