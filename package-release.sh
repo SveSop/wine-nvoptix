@@ -3,7 +3,7 @@
 set -e
 
 if [ -z "$1" ]; then
-  echo "Usage: package-release.sh destdir"
+  echo "Usage: package-release.sh destdir [--fakedlls]"
   exit 1
 fi
 
@@ -15,28 +15,27 @@ if [ -e "$NVOPTIX_BUILD_DIR" ]; then
   exit 1
 fi
 
-function build_arch {
-  export WINEARCH="win$1"
-  export WINEPREFIX="$NVOPTIX_BUILD_DIR/wine.$1"
-  
-  cd "$NVOPTIX_SRC_DIR"
+cd "$NVOPTIX_SRC_DIR"
 
-  meson --cross-file "$NVOPTIX_SRC_DIR/build-wine$1.txt"  \
-        --buildtype "release"                         \
-        --prefix "$NVOPTIX_BUILD_DIR/install.$1"         \
-        --libdir="lib$1"				\
-	--strip                                       \
-        "$NVOPTIX_BUILD_DIR/build.$1"
+meson --cross-file "$NVOPTIX_SRC_DIR/build-wine64.txt"    \
+        --buildtype "release"                             \
+        --prefix "$NVOPTIX_BUILD_DIR/install"             \
+        --libdir="x64"                                    \
+	--strip                                           \
+        "$NVOPTIX_BUILD_DIR/build"
 
-  cd "$NVOPTIX_BUILD_DIR/build.$1"
-  ninja install
+cd "$NVOPTIX_BUILD_DIR/build"
+ninja install
 
-  mv "$NVOPTIX_BUILD_DIR/install.$1/lib$1" "$NVOPTIX_BUILD_DIR"
-  mv "$NVOPTIX_BUILD_DIR/install.$1/fakedlls" "$NVOPTIX_BUILD_DIR/fakedlls$1"
-  cp "$NVOPTIX_SRC_DIR/setup_nvoptix.sh" "$NVOPTIX_BUILD_DIR/setup_nvoptix.sh"
-  chmod +x "$NVOPTIX_BUILD_DIR/setup_nvoptix.sh"
-  rm -R "$NVOPTIX_BUILD_DIR/build.$1"
-  rm -R "$NVOPTIX_BUILD_DIR/install.$1"
-}
+mv "$NVOPTIX_BUILD_DIR/install/x64" "$NVOPTIX_BUILD_DIR"
 
-build_arch 64
+if [ "$2" == "--fakedlls" ]; then
+  mv "$NVOPTIX_BUILD_DIR/install/fakedlls" "$NVOPTIX_BUILD_DIR/fakedlls"
+else
+  rm -R "$NVOPTIX_BUILD_DIR/install/fakedlls"
+fi
+
+cp "$NVOPTIX_SRC_DIR/setup_nvoptix.sh" "$NVOPTIX_BUILD_DIR/setup_nvoptix.sh"
+chmod +x "$NVOPTIX_BUILD_DIR/setup_nvoptix.sh"
+rm -R "$NVOPTIX_BUILD_DIR/build"
+rm -R "$NVOPTIX_BUILD_DIR/install"
