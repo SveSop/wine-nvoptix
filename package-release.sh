@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-NVOPTIX_SRC_DIR=`dirname $(readlink -f $0)`
+NVOPTIX_SRC_DIR=$(dirname "$(readlink -f "$0")")
 NVOPTIX_BUILD_DIR=$(realpath "$1")"/nvoptix"
 
 if [ -e "$NVOPTIX_BUILD_DIR" ]; then
@@ -21,7 +21,7 @@ meson --cross-file "$NVOPTIX_SRC_DIR/build-wine64.txt"    \
         --buildtype "release"                             \
         --prefix "$NVOPTIX_BUILD_DIR/install"             \
         --libdir="x64"                                    \
-	--strip                                           \
+        --strip                                           \
         "$NVOPTIX_BUILD_DIR/build"
 
 cd "$NVOPTIX_BUILD_DIR/build"
