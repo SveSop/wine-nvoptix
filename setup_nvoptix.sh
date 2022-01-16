@@ -1,12 +1,11 @@
 #!/bin/bash
 
 nvoptix_dir="$(dirname "$(readlink -fm "$0")")"
-dll_ext='dll.so'
-wine="wine64"
-lib='lib64'
+lib='x64'
+wine='wine64'
 
-if [ ! -f "$nvoptix_dir/$lib/nvoptix.$dll_ext" ]; then
-    echo "nvoptix.$dll_ext not found in $nvoptix_dir/$lib" >&2
+if [ ! -f "$nvoptix_dir/$lib/nvoptix.dll.so" ]; then
+    echo "nvoptix.dll.so not found in $nvoptix_dir/$lib" >&2
     exit 1
 fi
 
@@ -16,7 +15,6 @@ if [ -z "$winever" ]; then
     exit 1
 fi
 
-quiet=false
 assume=
 
 function ask {
@@ -41,11 +39,6 @@ while [[ $# -gt 0 ]]; do
         assume='n'
         shift
         ;;
-    -q|--quiet)
-        quiet=true
-        assume=${assume:-'y'}
-        shift 
-        ;;
     *)
         POSITIONAL+=("$1")
         shift
@@ -53,10 +46,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 set -- "${POSITIONAL[@]}"
-
-if [ "$quiet" = true ]; then
-    exec >/dev/null
-fi
 
 if [ -z "$WINEPREFIX" ]; then
     ask "WINEPREFIX is not set, continue? (y/N)"
@@ -79,63 +68,43 @@ if [ -z "$unix_sys_path" ]; then
   exit 1
 fi
 
-ret=0
-
-function removeOverride {
-    echo "    [1/2] Removing override... "
-    $wine reg delete 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v "$1" /f > /dev/null 2>&1
-    if [ $? -ne 0 ]; then
-        echo "Override does not exist, trying next..."
-        ret=2
-    fi
+function remove {
+    echo "    Removing nvoptix... "
     local dll="$unix_sys_path/$1.dll"
-    echo "    [2/2] Removing link... "
     if [ -h "$dll" ]; then
         out=$(rm "$dll" 2>&1)
         if [ $? -ne 0 ]; then
-            ret=2
             echo -e "$out"
+            exit=2
         fi
     else
         echo -e "'$dll' is not a link or doesn't exist."
-        ret=2
+        exit=2
     fi
 }
 
-function createOverride {
-    echo "    [1/2] Creating override... "
-    $wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v "$1" /d native /f >/dev/null 2>&1
+function create {
+    echo "    Installing nvoptix... "
+    ln -sf "$nvoptix_dir/$lib/$1.dll.so" "$unix_sys_path/$1.dll"
     if [ $? -ne 0 ]; then
-        echo -e "Failed"
-        exit 1
-    fi
-    echo "    [2/2] Creating link to $1.$dll_ext... "
-    ln -sf "$nvoptix_dir/$lib/$1.$dll_ext" "$unix_sys_path/$1.dll"
-    if [ $? -ne 0 ]; then
-        echo -e "Failed"
+        echo -e "Failed to create symlink"
         exit 1
     fi
 }
 
 case "$1" in
 uninstall)
-    fun=removeOverride
+    fun=remove
     ;;
 install)
-    fun=createOverride
+    fun=create
     ;;
 *)
     echo "Unrecognized option: $1"
-    echo "Usage: $0 [install|uninstall] [-q|--quiet] [-y|-n]"
+    echo "Usage: $0 [install|uninstall]"
     exit 1
     ;;
 esac
 
-unix_sys_path=$($wine winepath -u 'C:\windows\system32' 2> /dev/null)
-echo '[1/1] 64 bit nvoptix :'
 $fun nvoptix
-if [ "$fun" = removeOverride ]; then
-   echo "Rebooting prefix!"
-   wineboot -u
-fi
 exit $ret
