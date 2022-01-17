@@ -4,11 +4,9 @@ cpp = 'wineg++'
 ar = 'ar'
 strip = 'strip'
 
-[built-in options]
+[properties]
 c_args = ['-m64', '--no-gnu-unique', '-D__WINESRC__', '-Wno-attributes', '-Wno-implicit-function-declaration']
 c_link_args = ['-m64', '-mwindows']
-
-[properties]
 needs_exe_wrapper = true
 winelib = true
 

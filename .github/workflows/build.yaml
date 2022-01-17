@@ -1,35 +1,30 @@
 name: Build
 
-on: push
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   ci:
     name: Build
     runs-on: ubuntu-latest
-    container: archlinux:base-devel
+    container: ubuntu:20.04
     steps:
       - name: Prepare
         run: |
-          echo -e '\n\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n\n' >> /etc/pacman.conf
-          pacman -Syu --noconfirm --needed git meson ninja wine
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update && apt-get -y upgrade
+          apt-get install -y --no-install-recommends meson ninja-build wine64-tools
+          echo "/usr/lib/wine" >> $GITHUB_PATH
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup x86_64
-        run: meson setup ./build64 --cross-file ./build-wine64.txt --libdir lib64 --prefix /usr --buildtype release --strip
-      - name: Build x86_64
-        run: ninja -C ./build64
-      - name: Setup x86
-        run: meson setup ./build32 --cross-file ./build-wine32.txt --libdir lib32 --prefix /usr --buildtype release --strip
-      - name: Build x86
-        run: ninja -C ./build32
+      - name: Setup
+        run: meson setup ./build --cross-file ./build-wine64.txt --libdir lib --prefix /usr --buildtype release --strip
+      - name: Build
+        run: ninja -C ./build
       - name: Install
-        run: |
-          export DESTDIR="${PWD}"
-          ninja -C ./build64 install
-          ninja -C ./build32 install
+        run: env DESTDIR="${PWD}" ninja -C ./build install
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: wine-nvoptix
           # TODO: fix defs and fakedlls being installed to weird locations
-          path: usr/lib*/**
+          path: usr/lib/**

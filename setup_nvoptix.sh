@@ -107,4 +107,3 @@ install)
 esac
 
 $fun nvoptix
-exit $ret
