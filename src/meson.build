@@ -24,7 +24,7 @@ nvoptix_dll_target = custom_target('nvoptix.dll',
   input   : [ 'nvoptix.spec', nvoptix_res_target ],
   command : [ winebuild, target_arch, '--dll', '--fake-module', '-E', '@INPUT@', '-o', '@OUTPUT@', '-F', 'nvoptix.dll' ],
   install : true,
-  install_dir : 'fakedlls')
+  install_dir : 'fakedll')
 
 
 nvoptix_def_target = custom_target('nvoptix.def',
