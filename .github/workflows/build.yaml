@@ -16,15 +16,11 @@ jobs:
           echo "/usr/lib/wine" >> $GITHUB_PATH
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup
-        run: meson setup ./build --cross-file ./build-wine64.txt --libdir lib --prefix /usr --buildtype release --strip
       - name: Build
-        run: ninja -C ./build
-      - name: Install
-        run: env DESTDIR="${PWD}" ninja -C ./build install
+        run: ./package-release.sh prod
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: wine-nvoptix
-          # TODO: fix defs and fakedlls being installed to weird locations
-          path: usr/lib/**
+          path: prod/nvoptix
+          if-no-files-found: error
