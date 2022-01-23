@@ -1,38 +1,43 @@
-# wine-nvoptix a OptiX relay library for wine 
+# wine-nvoptix a OptiX relay library for wine
 
 [Wine](https://www.winehq.org/) is a compability software allowing Linux and Mac OS users to run Windows software as native applications. Wine works by translating calls to windows libraries to native Linux / Mac OS libraries.
 
-wine-nvoptix is a library to be used with wine. It aims at allowing Linux / Mac OS users to launch Windows software using the OptiX API. This API, developed by NVIDIA, is used to do Ray Tracing calculations using NVIDIA GPU, mostly in 3D environments. This library, wine-optix, works by creating a fake windows Dll which will translate calls to the Windows NVIDIA Optix API to the Linux / Mac OS native API.
+wine-nvoptix is a library to be used with wine. It aims at allowing Linux / Mac OS users to launch Windows software using the OptiX API. This API, developed by NVIDIA, is used to do Ray Tracing calculations using NVIDIA GPU, mostly in 3D environments. This library, wine-optix, works by creating a fake windows Dll which will translate calls to the Windows NVIDIA Optix API to the Linux / Mac OS native API.
 
-This project is heavily based on the public documentation and source files from NVIDIA: https://raytracing-docs.nvidia.com/
+This project is heavily based on the public documentation and source files from NVIDIA: [https://raytracing-docs.nvidia.com/](https://raytracing-docs.nvidia.com/)
 
 This work is done freely to help the users community to run their Windows programs on Linux / Mac OS.
 
-## Building:  
+## Building
+
 Compile requirements: Meson + Ninja + other usual suspects like GCC and Wine  
 
 Compile with: ./package_release.sh /install/folder - eg: ./package_release.sh /home/user/  
 The binaries will then be placed in /home/user/nvoptix  
 
-## Usage:  
+## Usage
+
 Install the nvoptix.dll relay to your wineprefix by running the script:  
 cd /home/user/nvoptix  
 WINEPREFIX=/your/wine/prefix ./setup_nvoptix.sh install  
 
 You need a working Wine version with wineprefix set up, and a correctly configured NVIDIA Graphics adapter using proprietary NVIDIA drivers 470 or later  
 
-## Requirements:  
+## Requirements
+
 [DXVK-NVAPI](https://github.com/jp7677/dxvk-nvapi)  
 
 Recommended: [WINE-NVML](https://github.com/Saancreed/wine-nvml) for hardware function detection from NVIDIA GPU  
 
-## License:  
+## License
+
 Parts of this project is released on the terms of MIT license, however various headers and sourcecode is released under under different license.  
 Files and headers in the `include` folder is released under GNU Lesser General Public License - Wine  
 Header files in the `src` folder is released under NVIDIA License.  
 
-## Wine License:  
-```
+## Wine License
+
+```text
 Copyright (c) 1993-2022 the Wine project authors (see the file AUTHORS
 for a complete list)
 
@@ -52,8 +57,9 @@ copy, write to the Free Software Foundation, Inc., 51 Franklin St,
 Fifth Floor, Boston, MA 02110-1301, USA.
 ```
 
-## NVIDIA License:  
-```
+## NVIDIA License
+
+```text
 Copyright (c) 2021 NVIDIA Corporation.  All rights reserved.
 
 NVIDIA Corporation and its licensors retain all intellectual property and proprietary
@@ -72,4 +78,5 @@ BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS) ARISING OUT OF THE USE OF OR
 INABILITY TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGES
 ```
+
 Also read: [https://docs.nvidia.com/sdk-manager/eula/index.html](https://docs.nvidia.com/sdk-manager/eula/index.html)  
