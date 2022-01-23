@@ -2,9 +2,9 @@
 
 [Wine](https://www.winehq.org/) is a compability software allowing Linux and Mac OS users to run Windows software as native applications. Wine works by translating calls to windows libraries to native Linux / Mac OS libraries.
 
-wine-nvoptix is a library to be used with wine. It aims at allowing Linux / Mac OS users to launch Windows software using the OptiX API. This API, developed by nVidia, is used to do Ray Tracing calculations using nVidia GPU, mostly in 3D environments. This library, wine-optix, works by creating a fake windows Dll which will translate calls to the Windows nVidia Optix API to the Linux / Mac OS native API.
+wine-nvoptix is a library to be used with wine. It aims at allowing Linux / Mac OS users to launch Windows software using the OptiX API. This API, developed by NVIDIA, is used to do Ray Tracing calculations using NVIDIA GPU, mostly in 3D environments. This library, wine-optix, works by creating a fake windows Dll which will translate calls to the Windows NVIDIA Optix API to the Linux / Mac OS native API.
 
-This project is heavily based on the public documentation and source files from nVidia: https://raytracing-docs.nvidia.com/
+This project is heavily based on the public documentation and source files from NVIDIA: https://raytracing-docs.nvidia.com/
 
 This work is done freely to help the users community to run their Windows programs on Linux / Mac OS.
 
@@ -19,12 +19,12 @@ Install the nvoptix.dll relay to your wineprefix by running the script:
 cd /home/user/nvoptix  
 WINEPREFIX=/your/wine/prefix ./setup_nvoptix.sh install  
 
-You need a working Wine version with wineprefix set up, and a correctly configured nVidia Graphics adapter using proprietary nVidia drivers 470 or later  
+You need a working Wine version with wineprefix set up, and a correctly configured NVIDIA Graphics adapter using proprietary NVIDIA drivers 470 or later  
 
 ## Requirements:  
 [DXVK-NVAPI](https://github.com/jp7677/dxvk-nvapi)  
 
-Recommended: [WINE-NVML](https://github.com/Saancreed/wine-nvml) for hardware function detection from nVidia GPU  
+Recommended: [WINE-NVML](https://github.com/Saancreed/wine-nvml) for hardware function detection from NVIDIA GPU  
 
 ## License:  
 Parts of this project is released on the terms of MIT license, however various headers and sourcecode is released under under different license.  
