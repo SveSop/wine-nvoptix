@@ -3,6 +3,7 @@ project('nvoptix', ['c'])
 cpu_family = target_machine.cpu_family()
 
 include_path = include_directories('./include')
+install_dir = get_option('libdir') / 'wine'
 
 lib_dl      = declare_dependency(link_args: [ '-ldl' ])
 

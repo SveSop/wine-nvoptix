@@ -19,17 +19,15 @@ cd "$NVOPTIX_SRC_DIR"
 
 meson --cross-file "$NVOPTIX_SRC_DIR/build-wine64.txt"    \
         --buildtype "release"                             \
-        --prefix "$NVOPTIX_BUILD_DIR/install"             \
-        --libdir="lib"                                    \
+        --prefix "$NVOPTIX_BUILD_DIR"                     \
+        --libdir="lib64"                                  \
         --strip                                           \
         "$NVOPTIX_BUILD_DIR/build"
 
 cd "$NVOPTIX_BUILD_DIR/build"
 ninja install
 
-mv "$NVOPTIX_BUILD_DIR/install/lib" "$NVOPTIX_BUILD_DIR"
-mv "$NVOPTIX_BUILD_DIR/install/fakedll" "$NVOPTIX_BUILD_DIR"
 cp "$NVOPTIX_SRC_DIR/setup_nvoptix.sh" "$NVOPTIX_BUILD_DIR/setup_nvoptix.sh"
 chmod +x "$NVOPTIX_BUILD_DIR/setup_nvoptix.sh"
 rm -R "$NVOPTIX_BUILD_DIR/build"
-rm -R "$NVOPTIX_BUILD_DIR/install"
+rm -R "$NVOPTIX_BUILD_DIR/defs"
