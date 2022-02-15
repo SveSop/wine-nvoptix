@@ -12,6 +12,9 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
           apt-get update && apt-get -y upgrade
+          apt-get install -y software-properties-common
+          add-apt-repository -y ppa:cybermax-dexter/meson-backport
+          apt-get update && apt-get -y upgrade
           apt-get install -y --no-install-recommends meson ninja-build wine64-tools
           echo "/usr/lib/wine" >> $GITHUB_PATH
       - name: Checkout
