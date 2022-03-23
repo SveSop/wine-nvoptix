@@ -58,7 +58,7 @@ typedef struct OptixFunctionTable_47
     OptixResult (*optixProgramGroupDestroy)(OptixProgramGroup programGroup);
     OptixResult (*optixProgramGroupGetStackSize)(OptixProgramGroup programGroup, void *stackSizes);
     OptixResult (*optixPipelineCreate)(OptixDeviceContext context, const void *pipelineCompileOptions, const void *pipelineLinkOptions, const OptixProgramGroup *programGroups, unsigned int numProgramGroups, char *logString, size_t *logStringSize, OptixPipeline *pipeline);
-    OptixResult (*optixPipelineDestroy)(OptixPipeline pipeline) ;
+    OptixResult (*optixPipelineDestroy)(OptixPipeline pipeline);
     OptixResult (*optixPipelineSetStackSize)(OptixPipeline pipeline, unsigned int directCallableStackSizeFromTraversal, unsigned int directCallableStackSizeFromState, unsigned int continuationStackSize, unsigned int maxTraversableGraphDepth);
     OptixResult (*optixAccelComputeMemoryUsage)(OptixDeviceContext context, const void *accelOptions, const void *buildInputs, unsigned int numBuildInputs, void *bufferSizes);
     OptixResult (*optixAccelBuild)(OptixDeviceContext context, CUstream stream, const void *accelOptions, const void *buildInputs, unsigned int numBuildInputs, CUdeviceptr tempBuffer, size_t tempBufferSizeInBytes, CUdeviceptr outputBuffer, size_t outputBufferSizeInBytes, OptixTraversableHandle *outputHandle, const void *emittedProperties, unsigned int numEmittedProperties);
