@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include <stddef.h>
+
 // opaque pointers, I'm assuming these stay the same no matter the ABI version
 
 typedef void *CUdeviceptr;
@@ -34,6 +36,7 @@ typedef enum OptixResult
     OPTIX_ERROR_INVALID_VALUE = 7001,
     OPTIX_ERROR_HOST_OUT_OF_MEMORY = 7002,
     OPTIX_ERROR_DISK_CACHE_INVALID_PATH = 7010,
+    OPTIX_ERROR_INVALID_FUNCTION_USE = 7204,
     OPTIX_ERROR_UNSUPPORTED_ABI_VERSION = 7801,
     OPTIX_ERROR_FUNCTION_TABLE_SIZE_MISMATCH = 7802,
     OPTIX_ERROR_INVALID_ENTRY_FUNCTION_OPTIONS = 7803,
@@ -53,3 +56,7 @@ typedef struct OptixTask_t *OptixTask;
 // one last type that's a number but not an enum
 
 typedef unsigned long long OptixTraversableHandle;
+
+// declare a variable for our pointer to function from native libnvoptix.so
+
+extern OptixResult (*poptixQueryFunctionTable)(int abiId, unsigned int numOptions, void *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable);
