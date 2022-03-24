@@ -48,9 +48,9 @@ OptixResult (*poptixQueryFunctionTable)(int abiId, unsigned int numOptions, void
 OptixResult __cdecl optixQueryFunctionTable(
     int abiId,
     unsigned int numOptions,
-    int* optionKeys,
-    const void** optionValues,
-    void* functionTable,
+    int *optionKeys,
+    const void **optionValues,
+    void *functionTable,
     size_t sizeOfTable)
 {
     TRACE("(%d, %u, %p, %p, %p, %zu)\n", abiId, numOptions, optionKeys, optionValues, functionTable, sizeOfTable);

@@ -74,9 +74,9 @@ typedef struct OptixFunctionTable_41
     OptixResult (*optixDenoiserComputeMemoryResources)(const OptixDenoiser handle, unsigned int maximumInputWidth, unsigned int maximumInputHeight, void *returnSizes);
     OptixResult (*optixDenoiserSetup)(OptixDenoiser denoiser, CUstream stream, unsigned int inputWidth, unsigned int inputHeight, CUdeviceptr state, size_t stateSizeInBytes, CUdeviceptr scratch, size_t scratchSizeInBytes);
     OptixResult (*optixDenoiserInvoke)(OptixDenoiser denoiser, CUstream stream, const void *params, CUdeviceptr denoiserState, size_t denoiserStateSizeInBytes, const void *layers, unsigned int numLayers, unsigned int inputOffsetX, unsigned int inputOffsetY, const void *outputLayer, CUdeviceptr scratch, size_t scratchSizeInBytes);
-    OptixResult (*optixDenoiserSetModel)(OptixDenoiser handle, int kind, void* data, size_t sizeInBytes);
+    OptixResult (*optixDenoiserSetModel)(OptixDenoiser handle, int kind, void *data, size_t sizeInBytes);
     OptixResult (*optixDenoiserComputeIntensity)(OptixDenoiser handle, CUstream stream, const void *inputImage, CUdeviceptr outputIntensity, CUdeviceptr scratch, size_t scratchSizeInBytes);
     OptixResult (*optixDenoiserComputeAverageColor)(OptixDenoiser handle, CUstream stream, const void *inputImage, CUdeviceptr outputAverageColor, CUdeviceptr scratch, size_t scratchSizeInBytes);
 } OptixFunctionTable_41;
 
-OptixResult __cdecl optixQueryFunctionTable_41(unsigned int numOptions, int* optionKeys, const void** optionValues, void* functionTable, size_t sizeOfTable);
+OptixResult __cdecl optixQueryFunctionTable_41(unsigned int numOptions, int *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable);

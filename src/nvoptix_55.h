@@ -84,4 +84,4 @@ typedef struct OptixFunctionTable_55
     OptixResult (*optixDenoiserCreateWithUserModel)(OptixDeviceContext context, const void *data, size_t dataSizeInBytes, OptixDenoiser *returnHandle);
 } OptixFunctionTable_55;
 
-OptixResult __cdecl optixQueryFunctionTable_55(unsigned int numOptions, int* optionKeys, const void** optionValues, void* functionTable, size_t sizeOfTable);
+OptixResult __cdecl optixQueryFunctionTable_55(unsigned int numOptions, int *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable);

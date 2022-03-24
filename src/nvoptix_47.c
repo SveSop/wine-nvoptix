@@ -305,9 +305,9 @@ static OptixResult __cdecl optixDenoiserCreateWithUserModel_47(OptixDeviceContex
 
 OptixResult __cdecl optixQueryFunctionTable_47(
         unsigned int numOptions,
-        int* optionKeys,
-        const void** optionValues,
-        void* functionTable,
+        int *optionKeys,
+        const void **optionValues,
+        void *functionTable,
         size_t sizeOfTable)
 {
     if (sizeOfTable != sizeof(OptixFunctionTable_47)) return OPTIX_ERROR_FUNCTION_TABLE_SIZE_MISMATCH;

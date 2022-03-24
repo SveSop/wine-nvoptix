@@ -285,7 +285,7 @@ static OptixResult __cdecl optixDenoiserInvoke_36(OptixDenoiser denoiser, CUstre
     return optixFunctionTable_36.optixDenoiserInvoke(denoiser, stream, params, denoiserState, denoiserStateSizeInBytes, layers, numLayers, inputOffsetX, inputOffsetY, outputLayer, scratch, scratchSizeInBytes);
 }
 
-static OptixResult __cdecl optixDenoiserSetModel_36(OptixDenoiser handle, int kind, void* data, size_t sizeInBytes)
+static OptixResult __cdecl optixDenoiserSetModel_36(OptixDenoiser handle, int kind, void *data, size_t sizeInBytes)
 {
     TRACE("(%p, %d, %p, %zu)\n", handle, kind, data, sizeInBytes);
     return optixFunctionTable_36.optixDenoiserSetModel(handle, kind, data, sizeInBytes);
@@ -299,9 +299,9 @@ static OptixResult __cdecl optixDenoiserComputeIntensity_36(OptixDenoiser handle
 
 OptixResult __cdecl optixQueryFunctionTable_36(
         unsigned int numOptions,
-        int* optionKeys,
-        const void** optionValues,
-        void* functionTable,
+        int *optionKeys,
+        const void **optionValues,
+        void *functionTable,
         size_t sizeOfTable)
 {
     if (sizeOfTable != sizeof(OptixFunctionTable_36)) return OPTIX_ERROR_FUNCTION_TABLE_SIZE_MISMATCH;
