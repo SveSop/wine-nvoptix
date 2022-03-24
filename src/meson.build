@@ -4,6 +4,7 @@ nvoptix_src = [
   'nvoptix_47.c',
   'nvoptix_41.c',
   'nvoptix_36.c',
+  'nvoptix_22.c',
 ]
 
 thread_dep = dependency('threads')
