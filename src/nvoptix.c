@@ -39,6 +39,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 #include "nvoptix_47.h"
 #include "nvoptix_41.h"
 #include "nvoptix_36.h"
+#include "nvoptix_22.h"
 
 static void *libnvoptix_handle = NULL;
 OptixResult (*poptixQueryFunctionTable)(int abiId, unsigned int numOptions, void *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable) = NULL;
@@ -91,6 +92,8 @@ OptixResult __cdecl optixQueryFunctionTable(
             return optixQueryFunctionTable_41(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
         case 36:
             return optixQueryFunctionTable_36(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
+        case 22:
+            return optixQueryFunctionTable_22(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
         default:
             ERR("abiId = %d not supported\n", abiId);
             return OPTIX_ERROR_UNSUPPORTED_ABI_VERSION;
