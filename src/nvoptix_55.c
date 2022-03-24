@@ -34,7 +34,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 
-#include "nvoptix_types.h"
+#include "nvoptix.h"
 #include "nvoptix_55.h"
 
 static OptixFunctionTable_55 optixFunctionTable_55;

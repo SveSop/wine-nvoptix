@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include "nvoptix_types.h"
+#include "nvoptix.h"
 #include <stddef.h>
 
 // defensive duplicate of OptixDeviceContextOptions because I have to modify it
@@ -78,3 +78,5 @@ typedef struct OptixFunctionTable_41
     OptixResult (*optixDenoiserComputeIntensity)(OptixDenoiser handle, CUstream stream, const void *inputImage, CUdeviceptr outputIntensity, CUdeviceptr scratch, size_t scratchSizeInBytes);
     OptixResult (*optixDenoiserComputeAverageColor)(OptixDenoiser handle, CUstream stream, const void *inputImage, CUdeviceptr outputAverageColor, CUdeviceptr scratch, size_t scratchSizeInBytes);
 } OptixFunctionTable_41;
+
+OptixResult __cdecl optixQueryFunctionTable_41(unsigned int numOptions, int* optionKeys, const void** optionValues, void* functionTable, size_t sizeOfTable);

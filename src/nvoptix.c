@@ -34,6 +34,7 @@
 
 WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 
+#include "nvoptix.h"
 #include "nvoptix_55.h"
 #include "nvoptix_47.h"
 #include "nvoptix_41.h"
