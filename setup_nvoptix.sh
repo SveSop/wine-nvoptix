@@ -1,10 +1,10 @@
 #!/bin/bash
 
-nvoptix_dir="$(dirname "$(readlink -fm "$0")")"
+nvoptix_dir="$(dirname "$(readlink -fm "$0")")/lib64/wine"
 wine='wine64'
 
-if [ ! -f "$nvoptix_dir/lib/nvoptix.dll.so" ]; then
-    echo "nvoptix.dll.so not found in $nvoptix_dir/lib" >&2
+if [ ! -f "$nvoptix_dir/x86_64-unix/nvoptix.dll.so" ]; then
+    echo "nvoptix.dll.so not found in $nvoptix_dir/x86_64-unix" >&2
     exit 1
 fi
 
@@ -84,7 +84,7 @@ function remove {
 
 function create {
     echo "    Installing nvoptix... "
-    ln -sf "$nvoptix_dir/lib/$1.dll.so" "$unix_sys_path/$1.dll"
+    ln -sf "$nvoptix_dir/x86_64-unix/$1.dll.so" "$unix_sys_path/$1.dll"
     if [ $? -ne 0 ]; then
         echo -e "Failed to create symlink"
         exit 1
