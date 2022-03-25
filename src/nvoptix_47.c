@@ -59,11 +59,18 @@ static OptixResult __cdecl optixDeviceContextCreate_47(CUcontext fromContext, co
 
     OptixDeviceContextOptions_47 opts = *options;
 
-    if (opts.logCallbackFunction || opts.logCallbackLevel)
+    if (opts.logCallbackFunction)
     {
-        FIXME("log callback not supported\n");
-        opts.logCallbackFunction = NULL;
-        opts.logCallbackLevel = 0;
+        if (callbacks_enabled())
+        {
+            opts.logCallbackData = wrap_callback(opts.logCallbackFunction, opts.logCallbackData);
+            opts.logCallbackFunction = log_callback;
+        }
+        else
+        {
+            WARN("log callbacks disabled\n");
+            opts.logCallbackFunction = NULL;
+        }
     }
 
     return optixFunctionTable_47.optixDeviceContextCreate(fromContext, &opts, context);
@@ -83,8 +90,23 @@ static OptixResult __cdecl optixDeviceContextGetProperty_47(OptixDeviceContext c
 
 static OptixResult __cdecl optixDeviceContextSetLogCallback_47(OptixDeviceContext context, OptixLogCallback callbackFunction, void *callbackData, unsigned int callbackLevel)
 {
-    FIXME("(%p, %p, %p, %u): stub\n", context, callbackFunction, callbackData, callbackLevel);
-    return OPTIX_SUCCESS;
+    TRACE("(%p, %p, %p, %u)\n", context, callbackFunction, callbackData, callbackLevel);
+
+    if (callbackFunction)
+    {
+        if (callbacks_enabled())
+        {
+            callbackData = wrap_callback(callbackFunction, callbackData);
+            callbackFunction = log_callback;
+        }
+        else
+        {
+            WARN("log callbacks disabled\n");
+            return OPTIX_SUCCESS;
+        }
+    }
+
+    return optixFunctionTable_47.optixDeviceContextSetLogCallback(context, callbackFunction, callbackData, callbackLevel);
 }
 
 static OptixResult __cdecl optixDeviceContextSetCacheEnabled_47(OptixDeviceContext context, int enabled)
