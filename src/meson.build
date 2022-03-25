@@ -22,7 +22,7 @@ nvoptix_res_target = custom_target('nvoptix.res',
 
 nvoptix_dll = shared_library('nvoptix.dll', nvoptix_src,
   name_prefix         : '',
-  dependencies        : [ thread_dep, lib_dl ],
+  dependencies        : [ thread_dep, lib_dl, lpthread ],
   include_directories : include_path,
   objects             : 'nvoptix.spec',
   install             : true,

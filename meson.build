@@ -6,6 +6,7 @@ include_path = include_directories('./include')
 install_dir = get_option('libdir') / 'wine'
 
 lib_dl      = declare_dependency(link_args: [ '-ldl' ])
+lpthread    = declare_dependency(link_args: [ '-lpthread' ])
 
 winebuild   = find_program('winebuild')
 winegcc     = find_program('winegcc')
