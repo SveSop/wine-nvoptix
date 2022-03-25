@@ -53,6 +53,10 @@ typedef struct OptixPipeline_t *OptixPipeline;
 typedef struct OptixDenoiser_t *OptixDenoiser;
 typedef struct OptixTask_t *OptixTask;
 
+// callback signatures
+
+typedef void (*OptixLogCallback)(unsigned int level, const char *tag, const char *message, void *cbdata);
+
 // one last type that's a number but not an enum
 
 typedef unsigned long long OptixTraversableHandle;

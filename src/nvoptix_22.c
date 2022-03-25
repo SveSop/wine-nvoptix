@@ -81,7 +81,7 @@ static OptixResult __cdecl optixDeviceContextGetProperty_22(OptixDeviceContext c
     return optixFunctionTable_22.optixDeviceContextGetProperty(context, property, value, sizeInBytes);
 }
 
-static OptixResult __cdecl optixDeviceContextSetLogCallback_22(OptixDeviceContext context, OptixLogCallback_22 callbackFunction, void *callbackData, unsigned int callbackLevel)
+static OptixResult __cdecl optixDeviceContextSetLogCallback_22(OptixDeviceContext context, OptixLogCallback callbackFunction, void *callbackData, unsigned int callbackLevel)
 {
     FIXME("(%p, %p, %p, %u): stub\n", context, callbackFunction, callbackData, callbackLevel);
     return OPTIX_SUCCESS;

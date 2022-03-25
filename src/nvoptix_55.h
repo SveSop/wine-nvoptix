@@ -25,11 +25,9 @@
 
 // defensive duplicate of OptixDeviceContextOptions because I have to modify it
 
-typedef void (*OptixLogCallback_55)(unsigned int level, const char *tag, const char *message, void *cbdata);
-
 typedef struct OptixDeviceContextOptions_55
 {
-    OptixLogCallback_55 logCallbackFunction;
+    OptixLogCallback logCallbackFunction;
     void *logCallbackData;
     int logCallbackLevel;
     int validationMode;
@@ -44,7 +42,7 @@ typedef struct OptixFunctionTable_55
     OptixResult (*optixDeviceContextCreate)(CUcontext fromContext, const OptixDeviceContextOptions_55 *options, OptixDeviceContext *context);
     OptixResult (*optixDeviceContextDestroy)(OptixDeviceContext context);
     OptixResult (*optixDeviceContextGetProperty)(OptixDeviceContext context, int property, void *value, size_t sizeInBytes);
-    OptixResult (*optixDeviceContextSetLogCallback)(OptixDeviceContext context, OptixLogCallback_55 callbackFunction, void *callbackData, unsigned int callbackLevel);
+    OptixResult (*optixDeviceContextSetLogCallback)(OptixDeviceContext context, OptixLogCallback callbackFunction, void *callbackData, unsigned int callbackLevel);
     OptixResult (*optixDeviceContextSetCacheEnabled)(OptixDeviceContext context, int enabled);
     OptixResult (*optixDeviceContextSetCacheLocation)(OptixDeviceContext context, const char *location);
     OptixResult (*optixDeviceContextSetCacheDatabaseSizes)(OptixDeviceContext context, size_t lowWaterMark, size_t highWaterMark);
