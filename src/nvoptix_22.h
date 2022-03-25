@@ -32,7 +32,6 @@ typedef struct OptixDeviceContextOptions_22
     OptixLogCallback_22 logCallbackFunction;
     void *logCallbackData;
     int logCallbackLevel;
-    int validationMode;
 } OptixDeviceContextOptions_22;
 
 // table as in public docs but stripped of most structures (pointers to which have been replaced with opaque `void*`)
