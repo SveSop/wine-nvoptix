@@ -21,6 +21,7 @@
 #pragma once
 
 #include <stddef.h>
+#include <pthread.h>
 
 // opaque pointers, I'm assuming these stay the same no matter the ABI version
 
@@ -53,6 +54,10 @@ typedef struct OptixPipeline_t *OptixPipeline;
 typedef struct OptixDenoiser_t *OptixDenoiser;
 typedef struct OptixTask_t *OptixTask;
 
+// callback signatures
+
+typedef void (*OptixLogCallback)(unsigned int level, const char *tag, const char *message, void *cbdata);
+
 // one last type that's a number but not an enum
 
 typedef unsigned long long OptixTraversableHandle;
@@ -60,3 +65,17 @@ typedef unsigned long long OptixTraversableHandle;
 // declare a variable for our pointer to function from native libnvoptix.so
 
 extern OptixResult (*poptixQueryFunctionTable)(int abiId, unsigned int numOptions, void *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable);
+
+// callback support
+
+struct callback_t
+{
+    OptixLogCallback __attribute((ms_abi)) func;
+    void* data;
+};
+
+extern pthread_rwlock_t callbacks_lock;
+extern struct callback_t *callbacks;
+_Bool callbacks_enabled(void);
+void *wrap_callback(OptixLogCallback func, void *data);
+void log_callback(unsigned int level, const char *tag, const char *message, void *cbdata);

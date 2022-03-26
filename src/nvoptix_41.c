@@ -59,11 +59,18 @@ static OptixResult __cdecl optixDeviceContextCreate_41(CUcontext fromContext, co
 
     OptixDeviceContextOptions_41 opts = *options;
 
-    if (opts.logCallbackFunction || opts.logCallbackLevel)
+    if (opts.logCallbackFunction)
     {
-        FIXME("log callback not supported\n");
-        opts.logCallbackFunction = NULL;
-        opts.logCallbackLevel = 0;
+        if (callbacks_enabled())
+        {
+            opts.logCallbackData = wrap_callback(opts.logCallbackFunction, opts.logCallbackData);
+            opts.logCallbackFunction = log_callback;
+        }
+        else
+        {
+            WARN("log callbacks disabled\n");
+            opts.logCallbackFunction = NULL;
+        }
     }
 
     return optixFunctionTable_41.optixDeviceContextCreate(fromContext, &opts, context);
@@ -81,10 +88,25 @@ static OptixResult __cdecl optixDeviceContextGetProperty_41(OptixDeviceContext c
     return optixFunctionTable_41.optixDeviceContextGetProperty(context, property, value, sizeInBytes);
 }
 
-static OptixResult __cdecl optixDeviceContextSetLogCallback_41(OptixDeviceContext context, OptixLogCallback_41 callbackFunction, void *callbackData, unsigned int callbackLevel)
+static OptixResult __cdecl optixDeviceContextSetLogCallback_41(OptixDeviceContext context, OptixLogCallback callbackFunction, void *callbackData, unsigned int callbackLevel)
 {
-    FIXME("(%p, %p, %p, %u): stub\n", context, callbackFunction, callbackData, callbackLevel);
-    return OPTIX_SUCCESS;
+    TRACE("(%p, %p, %p, %u)\n", context, callbackFunction, callbackData, callbackLevel);
+
+    if (callbackFunction)
+    {
+        if (callbacks_enabled())
+        {
+            callbackData = wrap_callback(callbackFunction, callbackData);
+            callbackFunction = log_callback;
+        }
+        else
+        {
+            WARN("log callbacks disabled\n");
+            return OPTIX_SUCCESS;
+        }
+    }
+
+    return optixFunctionTable_41.optixDeviceContextSetLogCallback(context, callbackFunction, callbackData, callbackLevel);
 }
 
 static OptixResult __cdecl optixDeviceContextSetCacheEnabled_41(OptixDeviceContext context, int enabled)

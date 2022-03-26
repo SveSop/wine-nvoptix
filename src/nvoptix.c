@@ -25,7 +25,9 @@
  */
 
 #include <dlfcn.h>
+#include <pthread.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
 #include "windef.h"
 #include "winbase.h"
@@ -120,11 +122,53 @@ static BOOL load_nvoptix(void)
 
     #undef LOAD_FUNCPTR
 
+    if (callbacks_enabled())
+    {
+        pthread_rwlockattr_t attr;
+
+        if (pthread_rwlockattr_init(&attr))
+        {
+            ERR("Failed to initialize rwlockattr.\n");
+            goto fail;
+        }
+
+        if (pthread_rwlockattr_setpshared(&attr, PTHREAD_PROCESS_SHARED))
+        {
+            ERR("Failed to configure rwlockattr.\n");
+            goto fail;
+        }
+
+        if (pthread_rwlock_init(&callbacks_lock, &attr))
+        {
+            ERR("Failed to initialize rwlock.\n");
+
+            if (pthread_rwlockattr_destroy(&attr))
+                ERR("Failed to destroy rwlockattr.\n");
+
+            goto fail;
+        }
+
+        if (pthread_rwlockattr_destroy(&attr))
+            ERR("Failed to destroy rwlockattr.\n");
+    }
+
     return TRUE;
 
 fail:
     dlclose(libnvoptix_handle);
     return FALSE;
+}
+
+static void unload_nvoptix(void)
+{
+    if (libnvoptix_handle)
+        dlclose(libnvoptix_handle);
+
+    if (callbacks)
+        free(callbacks);
+
+    if (callbacks_enabled() && pthread_rwlock_destroy(&callbacks_lock))
+        ERR("Failed to destroy rwlock.\n");
 }
 
 BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
@@ -139,7 +183,7 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
             break;
         case DLL_PROCESS_DETACH:
             if (reserved) break;
-            if (libnvoptix_handle) dlclose(libnvoptix_handle);
+            unload_nvoptix();
             break;
     }
 
