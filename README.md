@@ -8,24 +8,27 @@ This project is heavily based on the public documentation and source files from 
 
 This work is done freely to help the users community to run their Windows programs on Linux / Mac OS.
 
+Current release: v0.2  
+
 ## Building
 
 Compile requirements: Meson + Ninja + other usual suspects like GCC and Wine  
 
-Compile with: ./package_release.sh /install/folder - eg: ./package_release.sh /home/user/  
-The binaries will then be placed in /home/user/nvoptix  
+Compile with: ./package_release.sh /install/folder - eg: `./package_release.sh /home/user/`  
+The binaries will then be placed in `/home/user/nvoptix`  
 
 ## Usage
 
 Install the nvoptix.dll relay to your wineprefix by running the script:  
-cd /home/user/nvoptix  
-WINEPREFIX=/your/wine/prefix ./setup_nvoptix.sh install  
+`cd /home/user/nvoptix`  
+`WINEPREFIX=/your/wine/prefix ./setup_nvoptix.sh install`  
 
-You need a working Wine version with wineprefix set up, and a correctly configured NVIDIA Graphics adapter using proprietary NVIDIA drivers 470 or later  
+You need a working Wine version with wineprefix set up (see below for requirements), and a correctly configured NVIDIA Graphics adapter using proprietary NVIDIA drivers 470 or later (495+ for best OptiX compatibility)  
 
 ## Requirements
 
 [DXVK-NVAPI](https://github.com/jp7677/dxvk-nvapi)  
+[WINE-STAGING](https://www.winehq.org/) or standalone CUDA implementation for Wine [NVCUDA](https://github.com/SveSop/nvcuda)  
 
 Recommended: [WINE-NVML](https://github.com/Saancreed/wine-nvml) for hardware function detection from NVIDIA GPU  
 
