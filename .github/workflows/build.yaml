@@ -13,7 +13,7 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           apt-get update && apt-get -y upgrade
           apt-get install -y software-properties-common
-          add-apt-repository -y ppa:cybermax-dexter/meson-backport
+          add-apt-repository -y ppa:savoury1/build-tools
           apt-get update && apt-get -y upgrade
           apt-get install -y --no-install-recommends meson ninja-build wine64-tools
           echo "/usr/lib/wine" >> $GITHUB_PATH

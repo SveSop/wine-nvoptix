@@ -43,6 +43,10 @@ typedef enum OptixResult
     OPTIX_ERROR_INVALID_ENTRY_FUNCTION_OPTIONS = 7803,
     OPTIX_ERROR_LIBRARY_NOT_FOUND = 7804,
     OPTIX_ERROR_ENTRY_SYMBOL_NOT_FOUND = 7805,
+    OPTIX_ERROR_DEVICE_OUT_OF_MEMORY = 7807,
+    OPTIX_ERROR_CUDA_ERROR  = 7900,
+    OPTIX_ERROR_INTERNAL_ERROR = 7990,
+    OPTIX_ERROR_UNKNOWN = 7999,
 } OptixResult;
 
 // opaque pointers, I'm assuming these stay the same no matter the ABI version
