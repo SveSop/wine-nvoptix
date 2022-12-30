@@ -37,6 +37,7 @@
 WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 
 #include "nvoptix.h"
+#include "nvoptix_68.h"
 #include "nvoptix_60.h"
 #include "nvoptix_55.h"
 #include "nvoptix_47.h"
@@ -47,7 +48,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 static void *libnvoptix_handle = NULL;
 OptixResult (*poptixQueryFunctionTable)(int abiId, unsigned int numOptions, void *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable) = NULL;
 
-#define OPTIX_MAX_ABI_VERSION 60
+#define OPTIX_MAX_ABI_VERSION 68
 
 OptixResult __cdecl optixQueryFunctionTable(
     int abiId,
@@ -78,15 +79,17 @@ OptixResult __cdecl optixQueryFunctionTable(
         ERR("abiId = %d > %d not supported\n", abiId, OPTIX_MAX_ABI_VERSION);
         return OPTIX_ERROR_UNSUPPORTED_ABI_VERSION;
     }
-    else if (sizeOfTable > sizeof(OptixFunctionTable_60))
+    else if (sizeOfTable > sizeof(OptixFunctionTable_68))
     {
-        ERR("sizeOfTable = %zu > %zu not supported\n", sizeOfTable, sizeof(OptixFunctionTable_60));
+        ERR("sizeOfTable = %zu > %zu not supported\n", sizeOfTable, sizeof(OptixFunctionTable_68));
         return OPTIX_ERROR_FUNCTION_TABLE_SIZE_MISMATCH;
     }
 
     switch (abiId)
     {
         // TODO: add other ABI versions here
+        case 68:
+            return optixQueryFunctionTable_68(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
         case 60:
             return optixQueryFunctionTable_60(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
         case 55:
