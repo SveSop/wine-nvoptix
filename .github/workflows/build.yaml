@@ -5,24 +5,22 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   ci:
     name: Build
-    runs-on: ubuntu-latest
-    container: ubuntu:20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Prepare
         run: |
-          export DEBIAN_FRONTEND=noninteractive
-          apt-get update && apt-get -y upgrade
-          apt-get install -y software-properties-common
-          add-apt-repository -y ppa:savoury1/build-tools
-          apt-get update && apt-get -y upgrade
-          apt-get install -y --no-install-recommends meson ninja-build wine64-tools
+          sudo apt-get update && sudo apt-get -y upgrade
+          sudo apt-get install -y software-properties-common meson ninja-build
+          sudo apt-get install -y --no-install-recommends wine64-tools
           echo "/usr/lib/wine" >> $GITHUB_PATH
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
       - name: Build
         run: ./package-release.sh prod
+
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: wine-nvoptix
           path: prod/nvoptix
