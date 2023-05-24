@@ -48,7 +48,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 static void *libnvoptix_handle = NULL;
 OptixResult (*poptixQueryFunctionTable)(int abiId, unsigned int numOptions, void *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable) = NULL;
 
-#define OPTIX_MAX_ABI_VERSION 68
+#define OPTIX_MAX_ABI_VERSION 84
 
 OptixResult __cdecl optixQueryFunctionTable(
     int abiId,
@@ -88,6 +88,8 @@ OptixResult __cdecl optixQueryFunctionTable(
     switch (abiId)
     {
         // TODO: add other ABI versions here
+        case 84:
+            return optixQueryFunctionTable_84(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
         case 68:
             return optixQueryFunctionTable_68(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
         case 60:
