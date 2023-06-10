@@ -37,6 +37,7 @@
 WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 
 #include "nvoptix.h"
+#include "nvoptix_84.h"
 #include "nvoptix_68.h"
 #include "nvoptix_60.h"
 #include "nvoptix_55.h"
@@ -79,9 +80,9 @@ OptixResult __cdecl optixQueryFunctionTable(
         ERR("abiId = %d > %d not supported\n", abiId, OPTIX_MAX_ABI_VERSION);
         return OPTIX_ERROR_UNSUPPORTED_ABI_VERSION;
     }
-    else if (sizeOfTable > sizeof(OptixFunctionTable_68))
+    else if (sizeOfTable > sizeof(OptixFunctionTable_84))
     {
-        ERR("sizeOfTable = %zu > %zu not supported\n", sizeOfTable, sizeof(OptixFunctionTable_68));
+        ERR("sizeOfTable = %zu > %zu not supported\n", sizeOfTable, sizeof(OptixFunctionTable_84));
         return OPTIX_ERROR_FUNCTION_TABLE_SIZE_MISMATCH;
     }
 
