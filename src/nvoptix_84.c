@@ -394,7 +394,7 @@ OptixResult __cdecl optixQueryFunctionTable_84(
 {
     if (sizeOfTable != sizeof(OptixFunctionTable_84)) return OPTIX_ERROR_FUNCTION_TABLE_SIZE_MISMATCH;
 
-    OptixResult result = poptixQueryFunctionTable(68, numOptions, optionKeys, optionValues, &optixFunctionTable_84, sizeOfTable);
+    OptixResult result = poptixQueryFunctionTable(84, numOptions, optionKeys, optionValues, &optixFunctionTable_84, sizeOfTable);
 
     if (result != OPTIX_SUCCESS) return result;
 
