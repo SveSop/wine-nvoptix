@@ -1,4 +1,4 @@
-project('nvoptix', ['c'])
+project('nvoptix', ['c'], version: 'v0.3', license: 'MIT')
 
 cpu_family = target_machine.cpu_family()
 
