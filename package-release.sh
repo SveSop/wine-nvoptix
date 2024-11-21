@@ -20,14 +20,12 @@ cd "$NVOPTIX_SRC_DIR"
 meson --cross-file "$NVOPTIX_SRC_DIR/build-wine64.txt"    \
         --buildtype "release"                             \
         --prefix "$NVOPTIX_BUILD_DIR"                     \
-        --libdir="lib64"                                  \
+        --libdir="x64"                                    \
         --strip                                           \
         "$NVOPTIX_BUILD_DIR/build"
 
 cd "$NVOPTIX_BUILD_DIR/build"
 ninja install
 
-cp "$NVOPTIX_SRC_DIR/setup_nvoptix.sh" "$NVOPTIX_BUILD_DIR/setup_nvoptix.sh"
-chmod +x "$NVOPTIX_BUILD_DIR/setup_nvoptix.sh"
+mv "$NVOPTIX_BUILD_DIR/x64/nvoptix.dll.so" "$NVOPTIX_BUILD_DIR/x64/nvoptix.dll"
 rm -R "$NVOPTIX_BUILD_DIR/build"
-rm -R "$NVOPTIX_BUILD_DIR/defs"

@@ -19,11 +19,13 @@ The binaries will then be placed in `/home/user/nvoptix`
 
 ## Usage
 
-Install the nvoptix.dll relay to your wineprefix by running the script:  
-`cd /home/user/nvoptix`  
-`WINEPREFIX=/your/wine/prefix ./setup_nvoptix.sh install`  
+Install the nvoptix.dll relay to your wineprefix by copying or creating symlink:  
+`cd WINEPREFIX=/your/wine/prefix/windows/system32`  
+`ln -sf /home/user/nvoptix/x64/nvoptix.dll .`  
 
 You need a working Wine version with wineprefix set up (see below for requirements), and a correctly configured NVIDIA Graphics adapter using proprietary NVIDIA drivers 535 or later  
+OBS! Highly recommend using the multi-package nvidia-libs here, since nvcuda is also a requirement for running OptiX based software:  
+[https://github.com/SveSop/nvidia-libs](https://github.com/SveSop/nvidia-libs)  
 
 ## Requirements
 
