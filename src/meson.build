@@ -1,6 +1,7 @@
 nvoptix_src = [
   'nvoptix.c',
   'nvoptix_callbacks.c',
+  'nvoptix_93.c',
   'nvoptix_87.c',
   'nvoptix_84.c',
   'nvoptix_68.c',
