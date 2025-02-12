@@ -5,7 +5,7 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   ci:
     name: Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Prepare
         run: |
@@ -14,13 +14,13 @@ jobs:
           sudo apt-get install -y --no-install-recommends wine64-tools
           echo "/usr/lib/wine" >> $GITHUB_PATH
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build
         run: ./package-release.sh prod
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: wine-nvoptix
           path: prod/nvoptix

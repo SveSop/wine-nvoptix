@@ -8,7 +8,7 @@ This project is heavily based on the public documentation and source files from 
 
 This work is done freely to help the users community to run their Windows programs on Linux / Mac OS.
 
-Current release: v0.3  
+Current release: v0.4  
 
 ## Building
 
@@ -23,7 +23,7 @@ Install the nvoptix.dll relay to your wineprefix by copying or creating symlink:
 `cd WINEPREFIX=/your/wine/prefix/windows/system32`  
 `ln -sf /home/user/nvoptix/x64/nvoptix.dll .`  
 
-You need a working Wine version with wineprefix set up (see below for requirements), and a correctly configured NVIDIA Graphics adapter using proprietary NVIDIA drivers 535 or later  
+You need a working Wine version with wineprefix set up (see below for requirements), and a correctly configured NVIDIA Graphics adapter using proprietary NVIDIA drivers 565 or later  
 OBS! Highly recommend using the multi-package nvidia-libs here, since nvcuda is also a requirement for running OptiX based software:  
 [https://github.com/SveSop/nvidia-libs](https://github.com/SveSop/nvidia-libs)  
 
