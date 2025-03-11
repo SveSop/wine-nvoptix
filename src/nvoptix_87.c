@@ -53,11 +53,11 @@ static const char *__cdecl optixGetErrorString_87(OptixResult result)
     return optixFunctionTable_87.optixGetErrorString(result);
 }
 
-static OptixResult __cdecl optixDeviceContextCreate_87(CUcontext fromContext, const OptixDeviceContextOptions_87 *options, OptixDeviceContext *context)
+static OptixResult __cdecl optixDeviceContextCreate_87(CUcontext fromContext, const OptixDeviceContextOptions_41 *options, OptixDeviceContext *context)
 {
     TRACE("(%p, %p, %p)\n", fromContext, options, context);
 
-    OptixDeviceContextOptions_87 opts = *options;
+    OptixDeviceContextOptions_41 opts = *options;
 
     if (opts.logCallbackFunction)
     {

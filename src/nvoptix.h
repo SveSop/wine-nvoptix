@@ -58,13 +58,30 @@ typedef struct OptixPipeline_t *OptixPipeline;
 typedef struct OptixDenoiser_t *OptixDenoiser;
 typedef struct OptixTask_t *OptixTask;
 
+// one last simple type that's a number but not an enum
+
+typedef unsigned long long OptixTraversableHandle;
+
 // callback signatures
 
 typedef void (*OptixLogCallback)(unsigned int level, const char *tag, const char *message, void *cbdata);
 
-// one last type that's a number but not an enum
+// all known variants of device context options, suffixed with the ABI version they first appear in
 
-typedef unsigned long long OptixTraversableHandle;
+typedef struct OptixDeviceContextOptions_22
+{
+    OptixLogCallback logCallbackFunction;
+    void *logCallbackData;
+    int logCallbackLevel;
+} OptixDeviceContextOptions_22;
+
+typedef struct OptixDeviceContextOptions_41
+{
+    OptixLogCallback logCallbackFunction;
+    void *logCallbackData;
+    int logCallbackLevel;
+    int validationMode;
+} OptixDeviceContextOptions_41;
 
 // declare a variable for our pointer to function from native libnvoptix.so
 

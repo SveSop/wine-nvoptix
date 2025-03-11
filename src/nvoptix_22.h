@@ -23,15 +23,6 @@
 #include "nvoptix.h"
 #include <stddef.h>
 
-// defensive duplicate of OptixDeviceContextOptions because I have to modify it
-
-typedef struct OptixDeviceContextOptions_22
-{
-    OptixLogCallback logCallbackFunction;
-    void *logCallbackData;
-    int logCallbackLevel;
-} OptixDeviceContextOptions_22;
-
 // table as in public docs but stripped of most structures (pointers to which have been replaced with opaque `void*`)
 
 typedef struct OptixFunctionTable_22

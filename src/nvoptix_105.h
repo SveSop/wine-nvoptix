@@ -15,23 +15,13 @@
 #include "nvoptix.h"
 #include <stddef.h>
 
-// defensive duplicate of OptixDeviceContextOptions because I have to modify it
-
-typedef struct OptixDeviceContextOptions_105
-{
-    OptixLogCallback logCallbackFunction;
-    void *logCallbackData;
-    int logCallbackLevel;
-    int validationMode;
-} OptixDeviceContextOptions_105;
-
 // table as in public docs but stripped of most structures (pointers to which have been replaced with opaque `void*`)
 
 typedef struct OptixFunctionTable_105
 {
     const char *(*optixGetErrorName)(OptixResult result);
     const char *(*optixGetErrorString)(OptixResult result);
-    OptixResult (*optixDeviceContextCreate)(CUcontext fromContext, const OptixDeviceContextOptions_105 *options, OptixDeviceContext *context);
+    OptixResult (*optixDeviceContextCreate)(CUcontext fromContext, const OptixDeviceContextOptions_41 *options, OptixDeviceContext *context);
     OptixResult (*optixDeviceContextDestroy)(OptixDeviceContext context);
     OptixResult (*optixDeviceContextGetProperty)(OptixDeviceContext context, int property, void *value, size_t sizeInBytes);
     OptixResult (*optixDeviceContextSetLogCallback)(OptixDeviceContext context, OptixLogCallback callbackFunction, void *callbackData, unsigned int callbackLevel);
