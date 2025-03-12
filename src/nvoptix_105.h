@@ -73,4 +73,484 @@ typedef struct OptixFunctionTable_105
     OptixResult (*optixDenoiserCreateWithUserModel)(OptixDeviceContext context, const void *data, size_t dataSizeInBytes, OptixDenoiser *returnHandle);
 } OptixFunctionTable_105;
 
-OptixResult __cdecl optixQueryFunctionTable_105(unsigned int numOptions, int *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable);
+extern OptixFunctionTable_105 optixFunctionTable_105;
+
+struct optixDeviceContextCreate_105_params
+{
+    CUcontext fromContext;
+    const OptixDeviceContextOptions_41 *options;
+    OptixDeviceContext *context;
+    OptixResult _result;
+};
+
+struct optixDeviceContextDestroy_105_params
+{
+    OptixDeviceContext context;
+    OptixResult _result;
+};
+
+struct optixDeviceContextGetProperty_105_params
+{
+    OptixDeviceContext context;
+    int property;
+    void *value;
+    size_t sizeInBytes;
+    OptixResult _result;
+};
+
+struct optixDeviceContextSetLogCallback_105_params
+{
+    OptixDeviceContext context;
+    OptixLogCallback callbackFunction;
+    void *callbackData;
+    unsigned int callbackLevel;
+    OptixResult _result;
+};
+
+struct optixDeviceContextSetCacheEnabled_105_params
+{
+    OptixDeviceContext context;
+    int enabled;
+    OptixResult _result;
+};
+
+struct optixDeviceContextSetCacheLocation_105_params
+{
+    OptixDeviceContext context;
+    const char *location;
+    OptixResult _result;
+};
+
+struct optixDeviceContextSetCacheDatabaseSizes_105_params
+{
+    OptixDeviceContext context;
+    size_t lowWaterMark;
+    size_t highWaterMark;
+    OptixResult _result;
+};
+
+struct optixDeviceContextGetCacheEnabled_105_params
+{
+    OptixDeviceContext context;
+    int *enabled;
+    OptixResult _result;
+};
+
+struct optixDeviceContextGetCacheLocation_105_params
+{
+    OptixDeviceContext context;
+    char *location;
+    size_t locationSize;
+    OptixResult _result;
+};
+
+struct optixDeviceContextGetCacheDatabaseSizes_105_params
+{
+    OptixDeviceContext context;
+    size_t *lowWaterMark;
+    size_t *highWaterMark;
+    OptixResult _result;
+};
+
+struct optixModuleCreate_105_params
+{
+    OptixDeviceContext context;
+    const void *moduleCompileOptions;
+    const void *pipelineCompileOptions;
+    const char *input;
+    size_t inputSize;
+    char *logString;
+    size_t *logStringSize;
+    OptixModule *module;
+    OptixResult _result;
+};
+
+struct optixModuleCreateWithTasks_105_params
+{
+    OptixDeviceContext context;
+    const void *moduleCompileOptions;
+    const void *pipelineCompileOptions;
+    const char *input;
+    size_t inputSize;
+    char *logString;
+    size_t *logStringSize;
+    OptixModule *module;
+    OptixTask *firstTask;
+    OptixResult _result;
+};
+
+struct optixModuleGetCompilationState_105_params
+{
+    OptixModule module;
+    int *state;
+    OptixResult _result;
+};
+
+struct optixModuleDestroy_105_params
+{
+    OptixModule module;
+    OptixResult _result;
+};
+
+struct optixBuiltinISModuleGet_105_params
+{
+    OptixDeviceContext context;
+    const void *moduleCompileOptions;
+    const void *pipelineCompileOptions;
+    const void *builtinISOptions;
+    OptixModule *builtinModule;
+    OptixResult _result;
+};
+
+struct optixTaskExecute_105_params
+{
+    OptixTask task;
+    OptixTask *additionalTasks;
+    unsigned int maxNumAdditionalTasks;
+    unsigned int *numAdditionalTasksCreated;
+    OptixResult _result;
+};
+
+struct optixProgramGroupCreate_105_params
+{
+    OptixDeviceContext context;
+    const void *programDescriptions;
+    unsigned int numProgramGroups;
+    const void *options;
+    char *logString;
+    size_t *logStringSize;
+    OptixProgramGroup *programGroups;
+    OptixResult _result;
+};
+
+struct optixProgramGroupDestroy_105_params
+{
+    OptixProgramGroup programGroup;
+    OptixResult _result;
+};
+
+struct optixProgramGroupGetStackSize_105_params
+{
+    OptixProgramGroup programGroup;
+    void *stackSizes;
+    OptixPipeline pipeline;
+    OptixResult _result;
+};
+
+struct optixPipelineCreate_105_params
+{
+    OptixDeviceContext context;
+    const void *pipelineCompileOptions;
+    const void *pipelineLinkOptions;
+    const OptixProgramGroup *programGroups;
+    unsigned int numProgramGroups;
+    char *logString;
+    size_t *logStringSize;
+    OptixPipeline *pipeline;
+    OptixResult _result;
+};
+
+struct optixPipelineDestroy_105_params
+{
+    OptixPipeline pipeline;
+    OptixResult _result;
+};
+
+struct optixPipelineSetStackSize_105_params
+{
+    OptixPipeline pipeline;
+    unsigned int directCallableStackSizeFromTraversal;
+    unsigned int directCallableStackSizeFromState;
+    unsigned int continuationStackSize;
+    unsigned int maxTraversableGraphDepth;
+    OptixResult _result;
+};
+
+struct optixAccelComputeMemoryUsage_105_params
+{
+    OptixDeviceContext context;
+    const void *accelOptions;
+    const void *buildInputs;
+    unsigned int numBuildInputs;
+    void *bufferSizes;
+    OptixResult _result;
+};
+
+struct optixAccelBuild_105_params
+{
+    OptixDeviceContext context;
+    CUstream stream;
+    const void *accelOptions;
+    const void *buildInputs;
+    unsigned int numBuildInputs;
+    CUdeviceptr tempBuffer;
+    size_t tempBufferSizeInBytes;
+    CUdeviceptr outputBuffer;
+    size_t outputBufferSizeInBytes;
+    OptixTraversableHandle *outputHandle;
+    const void *emittedProperties;
+    unsigned int numEmittedProperties;
+    OptixResult _result;
+};
+
+struct optixAccelGetRelocationInfo_105_params
+{
+    OptixDeviceContext context;
+    OptixTraversableHandle handle;
+    void *info;
+    OptixResult _result;
+};
+
+struct optixCheckRelocationCompatibility_105_params
+{
+    OptixDeviceContext context;
+    const void *info;
+    int *compatible;
+    OptixResult _result;
+};
+
+struct optixAccelRelocate_105_params
+{
+    OptixDeviceContext context;
+    CUstream stream;
+    const void *info;
+    const void *relocateInputs;
+    size_t numRelocateInputs;
+    CUdeviceptr targetAccel;
+    size_t targetAccelSizeInBytes;
+    OptixTraversableHandle *targetHandle;
+    OptixResult _result;
+};
+
+struct optixAccelCompact_105_params
+{
+    OptixDeviceContext context;
+    CUstream stream;
+    OptixTraversableHandle inputHandle;
+    CUdeviceptr outputBuffer;
+    size_t outputBufferSizeInBytes;
+    OptixTraversableHandle *outputHandle;
+    OptixResult _result;
+};
+
+struct optixAccelEmitProperty_105_params
+{
+    OptixDeviceContext context;
+    CUstream stream;
+    OptixTraversableHandle handle;
+    const void *emittedProperty;
+    OptixResult _result;
+};
+
+struct optixConvertPointerToTraversableHandle_105_params
+{
+    OptixDeviceContext onDevice;
+    CUdeviceptr pointer;
+    int traversableType;
+    OptixTraversableHandle *traversableHandle;
+    OptixResult _result;
+};
+
+struct optixOpacityMicromapArrayComputeMemoryUsage_105_params
+{
+    OptixDeviceContext context;
+    const void *buildInput;
+    void *bufferSizes;
+    OptixResult _result;
+};
+
+struct optixOpacityMicromapArrayBuild_105_params
+{
+    OptixDeviceContext context;
+    CUstream stream;
+    const void *buildInput;
+    const void *buffers;
+    OptixResult _result;
+};
+
+struct optixOpacityMicromapArrayGetRelocationInfo_105_params
+{
+    OptixDeviceContext context;
+    CUdeviceptr opacityMicromapArray;
+    void *info;
+    OptixResult _result;
+};
+
+struct optixOpacityMicromapArrayRelocate_105_params
+{
+    OptixDeviceContext context;
+    CUstream stream;
+    const void *info;
+    CUdeviceptr targetOpacityMicromapArray;
+    size_t targetOpacityMicromapArraySizeInBytes;
+    OptixResult _result;
+};
+
+struct optixDisplacementMicromapArrayComputeMemoryUsage_105_params
+{
+    OptixDeviceContext context;
+    const void *buildInput;
+    void *bufferSizes;
+    OptixResult _result;
+};
+
+struct optixDisplacementMicromapArrayBuild_105_params
+{
+    OptixDeviceContext context;
+    CUstream stream;
+    const void *buildInput;
+    const void *buffers;
+    OptixResult _result;
+};
+
+struct optixClusterAccelComputeMemoryUsage_105_params
+{
+    OptixDeviceContext context;
+    void *buildMode;
+    const void *buildInput;
+    void *bufferSizes;
+    OptixResult _result;
+};
+
+struct optixClusterAccelBuild_105_params
+{
+    OptixDeviceContext context;
+    CUstream stream;
+    const void *buildModeDesc;
+    const void *buildInput;
+    CUdeviceptr argsArray;
+    CUdeviceptr argsCount;
+    unsigned int argsStrideInBytes;
+    OptixResult _result;
+};
+
+struct optixSbtRecordPackHeader_105_params
+{
+    OptixProgramGroup programGroup;
+    void *sbtRecordHeaderHostPointer;
+    OptixResult _result;
+};
+
+struct optixLaunch_105_params
+{
+    OptixPipeline pipeline;
+    CUstream stream;
+    CUdeviceptr pipelineParams;
+    size_t pipelineParamsSize;
+    const void *sbt;
+    unsigned int width;
+    unsigned int height;
+    unsigned int depth;
+    OptixResult _result;
+};
+
+struct optixCoopVecMatrixConvert_105_params
+{
+    OptixDeviceContext context;
+    CUstream stream;
+    unsigned int numNetworks;
+    const void *inputNetworkDescription;
+    CUdeviceptr inputNetworks;
+    size_t inputNetworkStrideInBytes;
+    const void *outputNetworkDescription;
+    CUdeviceptr outputNetworks;
+    size_t outputNetworkStrideInBytes;
+    OptixResult _result;
+};
+
+struct optixCoopVecMatrixComputeSize_105_params
+{
+    OptixDeviceContext context;
+    unsigned int N;
+    unsigned int K;
+    void *elementType;
+    void *layout;
+    size_t rowColumnStrideInBytes;
+    size_t *sizeInBytes;
+    OptixResult _result;
+};
+
+struct optixDenoiserCreate_105_params
+{
+    OptixDeviceContext context;
+    int modelKind;
+    const void *options;
+    OptixDenoiser *returnHandle;
+    OptixResult _result;
+};
+
+struct optixDenoiserDestroy_105_params
+{
+    OptixDenoiser handle;
+    OptixResult _result;
+};
+
+struct optixDenoiserComputeMemoryResources_105_params
+{
+    const OptixDenoiser handle;
+    unsigned int maximumInputWidth;
+    unsigned int maximumInputHeight;
+    void *returnSizes;
+    OptixResult _result;
+};
+
+struct optixDenoiserSetup_105_params
+{
+    OptixDenoiser denoiser;
+    CUstream stream;
+    unsigned int inputWidth;
+    unsigned int inputHeight;
+    CUdeviceptr state;
+    size_t stateSizeInBytes;
+    CUdeviceptr scratch;
+    size_t scratchSizeInBytes;
+    OptixResult _result;
+};
+
+struct optixDenoiserInvoke_105_params
+{
+    OptixDenoiser denoiser;
+    CUstream stream;
+    const void *params;
+    CUdeviceptr denoiserState;
+    size_t denoiserStateSizeInBytes;
+    const void *guideLayer;
+    const void *layers;
+    unsigned int numLayers;
+    unsigned int inputOffsetX;
+    unsigned int inputOffsetY;
+    CUdeviceptr scratch;
+    size_t scratchSizeInBytes;
+    OptixResult _result;
+};
+
+struct optixDenoiserComputeIntensity_105_params
+{
+    OptixDenoiser handle;
+    CUstream stream;
+    const void *inputImage;
+    CUdeviceptr outputIntensity;
+    CUdeviceptr scratch;
+    size_t scratchSizeInBytes;
+    OptixResult _result;
+};
+
+struct optixDenoiserComputeAverageColor_105_params
+{
+    OptixDenoiser handle;
+    CUstream stream;
+    const void *inputImage;
+    CUdeviceptr outputAverageColor;
+    CUdeviceptr scratch;
+    size_t scratchSizeInBytes;
+    OptixResult _result;
+};
+
+struct optixDenoiserCreateWithUserModel_105_params
+{
+    OptixDeviceContext context;
+    const void *data;
+    size_t dataSizeInBytes;
+    OptixDenoiser *returnHandle;
+    OptixResult _result;
+};

@@ -20,16 +20,13 @@
 
 #pragma once
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <pthread.h>
-
-// opaque pointers, I'm assuming these stay the same no matter the ABI version
 
 typedef void *CUdeviceptr;
 typedef struct CUctx_st *CUcontext;
 typedef struct CUstream_st *CUstream;
-
-// only the codes that could useful to us
 
 typedef enum OptixResult
 {
@@ -49,8 +46,6 @@ typedef enum OptixResult
     OPTIX_ERROR_UNKNOWN = 7999,
 } OptixResult;
 
-// opaque pointers, I'm assuming these stay the same no matter the ABI version
-
 typedef struct OptixDeviceContext_t *OptixDeviceContext;
 typedef struct OptixModule_t *OptixModule;
 typedef struct OptixProgramGroup_t *OptixProgramGroup;
@@ -58,15 +53,9 @@ typedef struct OptixPipeline_t *OptixPipeline;
 typedef struct OptixDenoiser_t *OptixDenoiser;
 typedef struct OptixTask_t *OptixTask;
 
-// one last simple type that's a number but not an enum
-
 typedef unsigned long long OptixTraversableHandle;
 
-// callback signatures
-
 typedef void (*OptixLogCallback)(unsigned int level, const char *tag, const char *message, void *cbdata);
-
-// all known variants of device context options, suffixed with the ABI version they first appear in
 
 typedef struct OptixDeviceContextOptions_22
 {
@@ -82,21 +71,3 @@ typedef struct OptixDeviceContextOptions_41
     int logCallbackLevel;
     int validationMode;
 } OptixDeviceContextOptions_41;
-
-// declare a variable for our pointer to function from native libnvoptix.so
-
-extern OptixResult (*poptixQueryFunctionTable)(int abiId, unsigned int numOptions, void *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable);
-
-// callback support
-
-struct callback_t
-{
-    OptixLogCallback __attribute((ms_abi)) func;
-    void* data;
-};
-
-extern pthread_rwlock_t callbacks_lock;
-extern struct callback_t *callbacks;
-_Bool callbacks_enabled(void);
-void *wrap_callback(OptixLogCallback func, void *data);
-void log_callback(unsigned int level, const char *tag, const char *message, void *cbdata);

@@ -24,35 +24,31 @@
  *
  */
 
-#include <dlfcn.h>
-#include <pthread.h>
 #include <stdarg.h>
-#include <stdlib.h>
 
 #include "windef.h"
 #include "winbase.h"
-#include "winnls.h"
 #include "wine/debug.h"
+#include "wine/unixlib.h"
 
 WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 
 #include "nvoptix.h"
+#include "nvoptix_private.h"
+#include "nvoptix_callbacks.h"
 #include "nvoptix_105.h"
-#include "nvoptix_93.h"
-#include "nvoptix_87.h"
-#include "nvoptix_84.h"
-#include "nvoptix_68.h"
-#include "nvoptix_60.h"
-#include "nvoptix_55.h"
-#include "nvoptix_47.h"
-#include "nvoptix_41.h"
-#include "nvoptix_36.h"
-#include "nvoptix_22.h"
+// #include "nvoptix_93.h"
+// #include "nvoptix_87.h"
+// #include "nvoptix_84.h"
+// #include "nvoptix_68.h"
+// #include "nvoptix_60.h"
+// #include "nvoptix_55.h"
+// #include "nvoptix_47.h"
+// #include "nvoptix_41.h"
+// #include "nvoptix_36.h"
+// #include "nvoptix_22.h"
 
-static void *libnvoptix_handle = NULL;
-OptixResult (*poptixQueryFunctionTable)(int abiId, unsigned int numOptions, void *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable) = NULL;
-
-#define OPTIX_MAX_ABI_VERSION 105
+static OptixResult attach_result;
 
 OptixResult __cdecl optixQueryFunctionTable(
     int abiId,
@@ -62,6 +58,9 @@ OptixResult __cdecl optixQueryFunctionTable(
     void *functionTable,
     size_t sizeOfTable)
 {
+    struct optixQueryFunctionTable_params params = { abiId, numOptions, optionKeys, optionValues, sizeOfTable };
+    NTSTATUS status;
+
     TRACE("(%d, %u, %p, %p, %p, %zu)\n", abiId, numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
 
     if (numOptions) FIXME("unexpected numOptions = %u\n", numOptions);
@@ -70,138 +69,95 @@ OptixResult __cdecl optixQueryFunctionTable(
 
     if (optionValues) FIXME("unexpected optionValues = %p\n", optionValues);
 
-    if (!libnvoptix_handle)
+    if (attach_result)
     {
-        return OPTIX_ERROR_LIBRARY_NOT_FOUND;
-    }
-    else if (!poptixQueryFunctionTable)
-    {
-        return OPTIX_ERROR_ENTRY_SYMBOL_NOT_FOUND;
+        ERR("unexpected attach result %d\n", attach_result);
+        return attach_result;
     }
     else if (abiId > OPTIX_MAX_ABI_VERSION)
     {
         ERR("abiId = %d > %d not supported\n", abiId, OPTIX_MAX_ABI_VERSION);
         return OPTIX_ERROR_UNSUPPORTED_ABI_VERSION;
     }
-    else if (sizeOfTable > sizeof(OptixFunctionTable_105))
+    else if (sizeOfTable > sizeof(CAT2(OptixFunctionTable_, OPTIX_MAX_ABI_VERSION)))
     {
-        ERR("sizeOfTable = %zu > %zu not supported\n", sizeOfTable, sizeof(OptixFunctionTable_105));
+        ERR("sizeOfTable = %zu > %zu not supported\n", sizeOfTable, sizeof(CAT2(OptixFunctionTable_, OPTIX_MAX_ABI_VERSION)));
         return OPTIX_ERROR_FUNCTION_TABLE_SIZE_MISMATCH;
     }
-
-    switch (abiId)
+    else if ((status = NVOPTIX_CALL(optixQueryFunctionTable, &params)))
     {
-        // TODO: add other ABI versions here
-        case 105:
-            return optixQueryFunctionTable_105(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        case 93:
-            return optixQueryFunctionTable_93(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        case 87:
-            return optixQueryFunctionTable_87(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        case 84:
-            return optixQueryFunctionTable_84(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        case 68:
-            return optixQueryFunctionTable_68(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        case 60:
-            return optixQueryFunctionTable_60(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        case 55:
-            return optixQueryFunctionTable_55(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        case 47:
-            return optixQueryFunctionTable_47(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        case 41:
-            return optixQueryFunctionTable_41(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        case 36:
-            return optixQueryFunctionTable_36(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        case 22:
-            return optixQueryFunctionTable_22(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
-        default:
-            ERR("abiId = %d not supported\n", abiId);
-            return OPTIX_ERROR_UNSUPPORTED_ABI_VERSION;
+        ERR("WINE_UNIX_CALL(optixQueryFunctionTable, abiId = %d) failed, status %lx\n", abiId, (unsigned long)status);
+        return OPTIX_ERROR_INTERNAL_ERROR;
     }
+
+    if (!params._result)
+    {
+        switch (abiId)
+        {
+
+#define CASE(abi) case abi: \
+                if (sizeOfTable != sizeof(CAT2(OptixFunctionTable_, abi))) \
+                { \
+                    ERR("sizeOfTable = %zu != %zu for abiId = %d\n", sizeOfTable, sizeof(CAT2(OptixFunctionTable_, abi)), abi); \
+                    return OPTIX_ERROR_FUNCTION_TABLE_SIZE_MISMATCH; \
+                } \
+                *(OptixFunctionTable_ ## abi*)functionTable = optixFunctionTable_ ## abi; \
+                break;
+
+            CASE(105);
+            // CASE(93);
+            // CASE(87);
+            // CASE(84);
+            // CASE(68);
+            // CASE(60);
+            // CASE(55);
+            // CASE(47);
+            // CASE(41);
+            // CASE(36);
+            // CASE(22);
+#undef CASE
+            default:
+                ERR("abiId = %d not supported\n", abiId);
+                return OPTIX_ERROR_UNSUPPORTED_ABI_VERSION;
+        }
+    }
+
+    return params._result;
 }
 
 int __cdecl rtGetSymbolTable()
 {
-    ERR("(): not implemented\n");
+    FIXME("(): not implemented\n");
     return ~0;
-}
-
-static BOOL load_nvoptix(void)
-{
-    if (!(libnvoptix_handle = dlopen("libnvoptix.so.1", RTLD_NOW)))
-    {
-        ERR("Wine cannot find the libnvoptix.so library, NVIDIA Optix support disabled.\n");
-        return FALSE;
-    }
-
-    #define LOAD_FUNCPTR(f) if (!(*(void **)(&p##f) = dlsym(libnvoptix_handle, #f))) { ERR("Can't find symbol %s.\n", #f); goto fail; }
-
-    LOAD_FUNCPTR(optixQueryFunctionTable);
-
-    #undef LOAD_FUNCPTR
-
-    if (callbacks_enabled())
-    {
-        pthread_rwlockattr_t attr;
-
-        if (pthread_rwlockattr_init(&attr))
-        {
-            ERR("Failed to initialize rwlockattr.\n");
-            goto fail;
-        }
-
-        if (pthread_rwlockattr_setpshared(&attr, PTHREAD_PROCESS_SHARED))
-        {
-            ERR("Failed to configure rwlockattr.\n");
-            goto fail;
-        }
-
-        if (pthread_rwlock_init(&callbacks_lock, &attr))
-        {
-            ERR("Failed to initialize rwlock.\n");
-
-            if (pthread_rwlockattr_destroy(&attr))
-                ERR("Failed to destroy rwlockattr.\n");
-
-            goto fail;
-        }
-
-        if (pthread_rwlockattr_destroy(&attr))
-            ERR("Failed to destroy rwlockattr.\n");
-    }
-
-    return TRUE;
-
-fail:
-    dlclose(libnvoptix_handle);
-    return FALSE;
-}
-
-static void unload_nvoptix(void)
-{
-    if (libnvoptix_handle)
-        dlclose(libnvoptix_handle);
-
-    if (callbacks)
-        free(callbacks);
-
-    if (callbacks_enabled() && pthread_rwlock_destroy(&callbacks_lock))
-        ERR("Failed to destroy rwlock.\n");
 }
 
 BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID reserved)
 {
-    TRACE("(%p, %u, %p)\n", instance, reason, reserved);
+    struct attach_params attach_params = { .log_callback = (UINT64)call_log_callback };
+    NTSTATUS status;
+
+    TRACE("(%p, %lu, %p)\n", instance, (unsigned long)reason, reserved);
 
     switch (reason)
     {
         case DLL_PROCESS_ATTACH:
             DisableThreadLibraryCalls(instance);
-            if (!load_nvoptix()) return FALSE;
+            if ((status = __wine_init_unix_call()))
+            {
+                ERR("__wine_init_unix_call failed, status %lx\n", (unsigned long)status);
+                return FALSE;
+            }
+            if ((status = NVOPTIX_CALL(attach, &attach_params)))
+            {
+                ERR("WINE_UNIX_CALL(attach) failed, status %lx\n", (unsigned long)status);
+                return FALSE;
+            }
+            attach_result = attach_params.result;
             break;
         case DLL_PROCESS_DETACH:
-            if (reserved) break;
-            unload_nvoptix();
+            if (reserved)
+                break;
+            NVOPTIX_CALL(detach, NULL);
             break;
     }
 

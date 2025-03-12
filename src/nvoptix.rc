@@ -1,0 +1,12 @@
+#include "winver.h"
+
+#define WINE_FILENAME_STR "nvoptix.dll"
+#define WINE_FILEDESCRIPTION_STR "NVIDIA OptiX Ray Tracing Engine"
+
+#define WINE_FILEVERSION      9,0,0,0
+#define WINE_FILEVERSION_STR "9.0.0"
+
+#define WINE_PRODUCTVERSION      9,0,0,0
+#define WINE_PRODUCTVERSION_STR "9.0.0"
+
+#include "wine/wine_common_ver.rc"
