@@ -16,9 +16,13 @@ nvoptix_src = [
 
 thread_dep = dependency('threads')
 
-nvoptix_dll = shared_library('nvoptix.dll', nvoptix_src,
+nvoptix_dll = shared_library(
+  'nvoptix.dll',
+  nvoptix_src,
   name_prefix         : '',
   dependencies        : [ thread_dep, lib_dl, lpthread ],
   include_directories : include_path,
   objects             : 'nvoptix.spec',
-  install             : true)
+  install             : true,
+  install_dir: install_dir_unix,
+)

@@ -12,16 +12,33 @@ Current release: v0.4
 
 ## Building
 
-Compile requirements: Meson + Ninja + other usual suspects like GCC and Wine-9.0 dev  
+Compile requirements: Meson + Ninja + other usual suspects like GCC and Wine-10.0 dev  
 
-Compile with: ./package_release.sh /install/folder - eg: `./package_release.sh /home/user/`  
-The binaries will then be placed in `/home/user/nvoptix`  
+Compile with: ./package_release.sh packagename /install/folder - eg:  
+`./package_release.sh packagename /home/user/`  
+The binaries will then be placed in `/home/user/nvoptix-packagename`  
+
+Optional use `--fakedll` to the build script like this:  
+`./package-release.sh packagename destdir --fakedll`  
+The library will be built as a winelib dll.so and a fakedll .dll placed in the  
+output folder in typical wine folderstructure eg.  
+`nvoptix-packagename/lib/wine/x86_64-windows` and `nvoptix-packagename/lib/wine/x86_64-unix`  
+These can preferrably be used with the wine env variable `WINEDLLPATH` like this:  
+`export WINEDLLPATH=nvoptix-packagename/lib/wine`  
+
+This should make `wineboot -u` copy the fakedll to your WINEPREFIX automatically if you  
+use wine > 10.0. Be aware that you must use this ENV variable whenever you use that  
+WINEPREFIX for OptiX.  
+The files can also be copied directly into the wine binary folders in the same folderstructure,  
+and it should work the same way.  
 
 ## Usage
 
 Install the nvoptix.dll relay to your wineprefix by copying or creating symlink:  
 `cd WINEPREFIX=/your/wine/prefix/windows/system32`  
 `ln -sf /home/user/nvoptix/x64/nvoptix.dll .`  
+
+Or use `WINEDLLPATH` like described above.  
 
 You need a working Wine version with wineprefix set up (see below for requirements), and a correctly configured NVIDIA Graphics adapter using proprietary NVIDIA drivers 565 or later  
 OBS! Highly recommend using the multi-package nvidia-libs here, since nvcuda is also a requirement for running OptiX based software:  
