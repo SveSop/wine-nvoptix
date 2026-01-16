@@ -1,27 +1,63 @@
-name: Build
+name: Artifacts (Package)
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [ master ]
+    tags: [ v* ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
 
 jobs:
-  ci:
-    name: Build
-    runs-on: ubuntu-latest
+  build-artifacts:
+    runs-on: ubuntu-24.04
+
     steps:
-      - name: Prepare
-        run: |
-          sudo apt-get update && sudo apt-get -y upgrade
-          sudo apt-get install -y software-properties-common meson ninja-build
-          sudo apt-get install -y --no-install-recommends wine64-tools
-          echo "/usr/lib/wine" >> $GITHUB_PATH
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
 
-      - name: Build
-        run: ./package-release.sh prod
+    - name: Prepare environment (none-tag)
+      if: github.ref_type != 'tag'
+      run: |
+        export VERSION="${GITHUB_REF##*/}-${GITHUB_SHA::7}"
+        echo "VERSION=${VERSION}" >> $GITHUB_ENV
+        echo "ARTIFACT=build/nvoptix-${VERSION}" >> $GITHUB_ENV
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: wine-nvoptix
-          path: prod/nvoptix
-          if-no-files-found: error
+    - name: Prepare environment (tag)
+      if: github.ref_type == 'tag'
+      run: |
+        export VERSION=$(git describe --always --tags --dirty=+)
+        echo "VERSION=${VERSION}" >> $GITHUB_ENV
+        echo "ARTIFACT=build/nvoptix-${VERSION}" >> $GITHUB_ENV
+
+    - name: Setup problem matcher
+      uses: Joshua-Ashton/gcc-problem-matcher@v3
+
+    - name: Build (default)
+      uses: SveSop/ubuntu-mingw-github-action@v2
+      with:
+        command: |
+          ./package-release.sh "${{ env.VERSION }}" build
+
+    - name: Build (fakedll)
+      uses: SveSop/ubuntu-mingw-github-action@v2
+      with:
+        command: |
+          ./package-release.sh "${{ env.VERSION }}-fakedll" build --fakedll
+
+    - name: Upload artifacts (default)
+      uses: actions/upload-artifact@v4
+      with:
+        name: nvoptix-${{ env.VERSION }}
+        path: ${{ env.ARTIFACT }}
+        if-no-files-found: error
+
+    - name: Upload artifacts (fakedll)
+      uses: actions/upload-artifact@v4
+      with:
+        name: nvoptix-${{ env.VERSION }}-fakedll
+        path: ${{ env.ARTIFACT }}-fakedll
+        if-no-files-found: error
