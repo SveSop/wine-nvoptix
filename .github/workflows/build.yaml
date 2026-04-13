@@ -65,8 +65,8 @@ jobs:
     - name: Create release archives
       if: github.ref_type == 'tag'
       run: |
-        tar -cJf ${{ env.ARTIFACT }}.tar.xz -C build nvoptix-${{ env.VERSION }}
-        tar -cJf ${{ env.ARTIFACT }}-fakedll.tar.xz -C build nvoptix-${{ env.VERSION }}-fakedll
+        tar -cJf nvoptix-${{ env.VERSION }}.tar.xz -C build nvoptix-${{ env.VERSION }}
+        tar -cJf nvoptix-${{ env.VERSION }}-fakedll.tar.xz -C build nvoptix-${{ env.VERSION }}-fakedll
 
     - name: Upload assets to Release
       if: github.ref_type == 'tag'
@@ -74,7 +74,7 @@ jobs:
       with:
         tag_name: ${{ github.ref_name }}
         files: |
-          ${{ env.ARTIFACT }}.tar.xz
-          ${{ env.ARTIFACT }}-fakedll.tar.xz
+          nvoptix-${{ env.VERSION }}.tar.xz
+          nvoptix-${{ env.VERSION }}-fakedll.tar.xz
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

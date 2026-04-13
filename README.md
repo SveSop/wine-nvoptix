@@ -8,7 +8,7 @@ This project is heavily based on the public documentation and source files from 
 
 This work is done freely to help the users community to run their Windows programs on Linux / Mac OS.
 
-Current release: v0.4  
+Current release: v0.5  
 
 ## Building
 
