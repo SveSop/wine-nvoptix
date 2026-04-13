@@ -49,6 +49,20 @@ typedef enum OptixResult
     OPTIX_ERROR_UNKNOWN = 7999,
 } OptixResult;
 
+typedef enum OptixCreationFlags
+{
+    OPTIX_CREATION_FLAG_NONE                  = 0,
+    OPTIX_CREATION_FLAG_BLOCK_UNTIL_EFFECTIVE = 1 << 0,
+} OptixCreationFlags;
+
+typedef enum OptixPipelineSymbolMemcpyKind
+{
+    OPTIX_PIPELINE_SYMBOL_MEMCPY_KIND_FROM_DEVICE = 0x21A0,
+    OPTIX_PIPELINE_SYMBOL_MEMCPY_KIND_FROM_HOST   = 0x21A1,
+    OPTIX_PIPELINE_SYMBOL_MEMCPY_KIND_TO_DEVICE   = 0x21A2,
+    OPTIX_PIPELINE_SYMBOL_MEMCPY_KIND_TO_HOST     = 0x21A3,
+} OptixPipelineSymbolMemcpyKind;
+
 // opaque pointers, I'm assuming these stay the same no matter the ABI version
 
 typedef struct OptixDeviceContext_t *OptixDeviceContext;

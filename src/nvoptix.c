@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (C) 2023-2025 Sveinar Søpler
+ * Copyright (C) 2023-2026 Sveinar Søpler
  * Copyright (C) 2022 Krzysztof Bogacki
  * Copyright (C) 2022 Timothée Barral
  *
@@ -37,6 +37,7 @@
 WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 
 #include "nvoptix.h"
+#include "nvoptix_118.h"
 #include "nvoptix_105.h"
 #include "nvoptix_93.h"
 #include "nvoptix_87.h"
@@ -52,7 +53,7 @@ WINE_DEFAULT_DEBUG_CHANNEL(nvoptix);
 static void *libnvoptix_handle = NULL;
 OptixResult (*poptixQueryFunctionTable)(int abiId, unsigned int numOptions, void *optionKeys, const void **optionValues, void *functionTable, size_t sizeOfTable) = NULL;
 
-#define OPTIX_MAX_ABI_VERSION 105
+#define OPTIX_MAX_ABI_VERSION 118
 
 OptixResult __cdecl optixQueryFunctionTable(
     int abiId,
@@ -83,15 +84,17 @@ OptixResult __cdecl optixQueryFunctionTable(
         ERR("abiId = %d > %d not supported\n", abiId, OPTIX_MAX_ABI_VERSION);
         return OPTIX_ERROR_UNSUPPORTED_ABI_VERSION;
     }
-    else if (sizeOfTable > sizeof(OptixFunctionTable_105))
+    else if (sizeOfTable > sizeof(OptixFunctionTable_118))
     {
-        ERR("sizeOfTable = %zu > %zu not supported\n", sizeOfTable, sizeof(OptixFunctionTable_105));
+        ERR("sizeOfTable = %zu > %zu not supported\n", sizeOfTable, sizeof(OptixFunctionTable_118));
         return OPTIX_ERROR_FUNCTION_TABLE_SIZE_MISMATCH;
     }
 
     switch (abiId)
     {
         // TODO: add other ABI versions here
+        case 118:
+            return optixQueryFunctionTable_118(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
         case 105:
             return optixQueryFunctionTable_105(numOptions, optionKeys, optionValues, functionTable, sizeOfTable);
         case 93:
